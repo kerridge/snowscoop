@@ -5,8 +5,8 @@ import 'package:html/parser.dart'; // Contains HTML parsers to generate a Docume
 import 'package:html/dom.dart'; // Contains DOM related classes for extracting data from elements
 
 var scrapeURL = 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid';
-var rainQuery = 'td.rainy > b > span.rain';
-var snowQuery = 'td.snowy > b > span.snow';
+var _rainQuery = 'td.rainy > b > span.rain';
+var _snowQuery = 'td.snowy > b > span.snow';
 
 Future initiate() async {
   var client = Client();
@@ -18,22 +18,39 @@ Future initiate() async {
 
   // Use html parser and query selector
   var document = parse(res.body);
-  List<Element> temps = document.querySelectorAll(rainQuery);
+  List<Element> temps = document.querySelectorAll(_rainQuery);
 
-  // JSON map
-  List<Map<String, dynamic>> linkMap = [];
+  // integer list of rain values
+  List<int> rainValues = new List(temps.length);
 
-  for (var temp in temps) {
+  for(int i = 0; i < temps.length; i++){
 
     // replace null placeholders
-    if(temp.text == '-'){
-      temp.text = '0';
+    if (temps[i].text == '-') {
+      temps[i].text = '0';
     }
-    
-    linkMap.add({
-      'temp': temp.text,
-    });
+    // TODO: map this
+    rainValues[i] = int.parse(temps[i].text);
   }
 
-  return json.encode(linkMap);
+  return rainValues;
 }
+
+  // For when I need JSON
+  
+  // // JSON map
+  // List<Map<String, dynamic>> linkMap = [];
+
+  // for (var temp in temps) {
+
+  //   // replace null placeholders
+  //   if(temp.text == '-'){
+  //     temp.text = '0';
+  //   }
+
+  //   linkMap.add({
+  //     'temp': temp.text,
+  //   });
+  // }
+
+  // return json.encode(linkMap);
