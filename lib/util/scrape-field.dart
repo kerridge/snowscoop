@@ -6,6 +6,7 @@ import 'package:html/dom.dart'; // Contains DOM related classes for extracting d
 
 var scrapeURL = 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid';
 var rainQuery = 'td.rainy > b > span.rain';
+var snowQuery = 'td.snowy > b > span.snow';
 
 Future initiate() async {
   var client = Client();
@@ -23,9 +24,12 @@ Future initiate() async {
   List<Map<String, dynamic>> linkMap = [];
 
   for (var temp in temps) {
+
+    // replace null placeholders
     if(temp.text == '-'){
       temp.text = '0';
     }
+    
     linkMap.add({
       'temp': temp.text,
     });
