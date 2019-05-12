@@ -4,7 +4,7 @@ import 'package:snowscoop/view-models/home-state.dart';
 import 'package:snowscoop/views/widgets/line-chart.dart';
 
 import 'package:snowscoop/util/graph-util.dart';
-import 'package:snowscoop/models/current-button.dart';
+// import 'package:snowscoop/models/enums/current-button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class HomeView extends HomeState {
@@ -62,7 +62,7 @@ class HomeView extends HomeState {
         child: new MaterialButton(
           height: 30,
           child: new Text(title),
-          onPressed: (() => print("pressed")),
+          onPressed: (() => switchButton(title)),
         ));
   }
 

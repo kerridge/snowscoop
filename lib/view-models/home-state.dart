@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:snowscoop/views/home.dart';
 import 'package:snowscoop/util/scrape-field.dart' as scraper;
 // enum for current button
-import 'package:snowscoop/models/current-button.dart';
+import 'package:snowscoop/models/enums/current-button.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -37,5 +37,10 @@ abstract class HomeState extends State<Home> {
     setState(() {
       scraping = false;  
     });
+  }
+
+  @protected
+  void switchButton(String title) {
+    
   }
 }
