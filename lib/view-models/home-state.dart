@@ -11,7 +11,7 @@ class Home extends StatefulWidget {
 abstract class HomeState extends State<Home> {
   // TEMP VAL
   @protected
-  List<int> rain;
+  List<int> rain = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
   bool scraping = true;
 
   @override

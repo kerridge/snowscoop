@@ -1,6 +1,6 @@
-/// Example of a simple line chart.
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:snowscoop/models/LinearWeather.dart';
 
 class SimpleLineChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -17,37 +17,61 @@ class SimpleLineChart extends StatelessWidget {
     );
   }
 
+  factory SimpleLineChart.withCustomData(List<int> weather){
+    return new SimpleLineChart(
+      _buildSeries(weather),
+      animate: true,
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return new charts.LineChart(seriesList, animate: animate);
+    return new charts.LineChart(
+      seriesList,
+      defaultRenderer:
+        new charts.LineRendererConfig(includeArea: true, stacked: true),
+      animate: animate);
   }
 
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<LinearSales, int>> _createSampleData() {
-    final data = [
-      new LinearSales(0, 5),
-      new LinearSales(1, 25),
-      new LinearSales(2, 100),
-      new LinearSales(3, 75),
-    ];
+  /// Build a series of x,y data points
+  static List<charts.Series<LinearWeather, int>> _buildSeries(List<int> weather) {
+
+    final data = new List<LinearWeather>(weather.length);
+
+    for (int i = 0; i < weather.length; i++) {
+      data[i] = new LinearWeather(i, weather[i]);
+    }
 
     return [
-      new charts.Series<LinearSales, int>(
-        id: 'Sales',
+      new charts.Series<LinearWeather, int>(
+        id: 'Weather',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
+        areaColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
+        domainFn: (LinearWeather weather, _) => weather.day,
+        measureFn: (LinearWeather weather, _) => weather.level,
         data: data,
       )
     ];
   }
-}
 
-/// Sample linear data type.
-class LinearSales {
-  final int year;
-  final int sales;
+  /// Create one series with sample hard coded data.
+  static List<charts.Series<LinearWeather, int>> _createSampleData() {
+    final data = [
+      new LinearWeather(0, 5),
+      new LinearWeather(1, 25),
+      new LinearWeather(2, 100),
+      new LinearWeather(3, 75),
+    ];
 
-  LinearSales(this.year, this.sales);
+    return [
+      new charts.Series<LinearWeather, int>(
+        id: 'Weather',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (LinearWeather weather, _) => weather.day,
+        measureFn: (LinearWeather weather, _) => weather.level,
+        data: data,
+      )
+    ];
+  }
 }
