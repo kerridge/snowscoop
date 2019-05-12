@@ -90,7 +90,12 @@ class HomeView extends HomeState {
       child: new ModalProgressHUD(
         inAsyncCall: scraping,
         opacity: 0,
-        child: new Center(child: SimpleLineChart.withCustomData(weather)),
+        child: new Center(
+          child: new Padding(
+            padding: EdgeInsets.all(10),
+            child: SimpleLineChart.withCustomData(weather)
+        ),
+        ),
       ),
     );
   }

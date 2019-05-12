@@ -26,15 +26,15 @@ abstract class HomeState extends State<Home> {
       weather[i] = 0;
     }
 
-    scrapeField();
+    scrapeField("SNOW");
   }
 
-  void scrapeField() async {
-    // scraping = true;
-    weather = await scraper.initiate();
-    setState(() {
-      scraping = false;  
-    });
+  void scrapeField(String scrapeQuery) async {
+    setState (() => scraping = true);
+
+    weather = await scraper.initiate(scrapeQuery);
+
+    setState (() => scraping = false);
   }
 
 
@@ -43,9 +43,11 @@ abstract class HomeState extends State<Home> {
   void switchButton(String title) {
     switch (title) {
       case "SNOW":
+        scrapeField(title);
         setState(() => selected =SelectedButton.SNOW);
         break;
       case "RAIN":
+        scrapeField(title);
         setState(() => selected =SelectedButton.RAIN);
         break;
       case "WIND":

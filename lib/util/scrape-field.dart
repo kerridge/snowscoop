@@ -8,20 +8,20 @@ var scrapeURL = 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid';
 var _rainQuery = 'td.rainy > b > span.rain';
 var _snowQuery = 'td.snowy > b > span.snow';
 
-Future initiate() async {
+Future initiate(String weather) async {
   var client = Client();
+  String query = _querySwitcher(weather);
+
   Response res = await client.get(
     scrapeURL
   );
-// td.rainy:nth-child(4) > b:nth-child(1) > span:nth-child(1)
-// tr.lar td.rainy.day-end b span.rain
 
   // Use html parser and query selector
   var document = parse(res.body);
-  List<Element> temps = document.querySelectorAll(_rainQuery);
+  List<Element> temps = document.querySelectorAll(query);
 
-  // integer list of rain values
-  List<int> rainValues = new List(temps.length);
+  // integer list of weather values
+  List<int> values = new List(temps.length);
 
   for(int i = 0; i < temps.length; i++){
 
@@ -30,10 +30,32 @@ Future initiate() async {
       temps[i].text = '0';
     }
     // TODO: map this
-    rainValues[i] = int.parse(temps[i].text);
+    values[i] = int.parse(temps[i].text);
   }
 
-  return rainValues;
+  return values;
+}
+
+String _querySwitcher(String weather) {
+  switch (weather) {
+    case "SNOW":
+      return _snowQuery;
+      break;
+    case "RAIN":
+      return _rainQuery;
+      break;
+    case "WIND":
+
+      break;
+    case "MIN":
+
+      break;
+    case "MAX":
+      break;
+    default:
+      break;
+  }
+  return null;
 }
 
   // For when I need JSON
