@@ -1,5 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:snowscoop/models/LinearWeather.dart';
+import 'package:snowscoop/models/linear-weather.dart';
 
 List<charts.Series<LinearWeather, int>> buildSeries(List<int> weather) {
 

@@ -1,6 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:snowscoop/models/LinearWeather.dart';
+import 'package:snowscoop/models/linear-weather.dart';
 
 class SimpleLineChart extends StatelessWidget {
   final List<charts.Series> seriesList;

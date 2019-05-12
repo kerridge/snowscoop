@@ -8,9 +8,10 @@ import 'package:snowscoop/util/graph-util.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 class HomeView extends HomeState {
+  Size _phoneSize;
   @override
   Widget build(BuildContext context) {
-    final Size phoneSize = MediaQuery.of(context).size;
+    _phoneSize = MediaQuery.of(context).size;
 
     return SafeArea(
       child: Scaffold(
@@ -20,14 +21,15 @@ class HomeView extends HomeState {
               new Row(
                 children: <Widget>[
                   new Container(
-                    width: phoneSize.width * 0.95,
-                    height: phoneSize.height * 0.90,
+                    width: _phoneSize.width * 0.95,
+                    height: _phoneSize.height * 0.90,
                     decoration: new BoxDecoration(
                         color: Color.fromRGBO(13, 13, 14, 50).withOpacity(0.2)),
                     child: new Column(
                       children: <Widget>[
-                        SizedBox(height: (phoneSize.height * 0.1)),
-                        graphContainer(phoneSize),
+                        SizedBox(height: (_phoneSize.height * 0.1)),
+                        graphContainer(),
+                        SizedBox(height: (_phoneSize.height * 0.01)),
                         new Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
@@ -57,27 +59,30 @@ class HomeView extends HomeState {
       isSelected = true;
     }
 
-    return new Material(
+    return new Container(
+      width: _phoneSize.width * 0.18,
+      child: new Material(
         borderRadius: BorderRadius.circular(10.0),
         shadowColor: Colors.lightBlueAccent.shade100,
         elevation: 5.0,
         color: isSelected ? Colors.grey : Color(0xFF0085CA),
         child: new MaterialButton(
-          height: 10,
-          minWidth: 10,
-          child: new Text(title),
+          child: new Text(
+            title,
+            style: new TextStyle(
+              fontSize: 12
+            ),
+          ),
           onPressed: () {
-            isSelected
-              ? print("disabled")
-              : switchButton(title);
+            isSelected ? print("disabled") : switchButton(title);
           },
-        ));
+        )));
   }
 
-  Widget graphContainer(Size phoneSize) {
+  Widget graphContainer() {
     return new Container(
-      height: (phoneSize.height * 0.45),
-      width: phoneSize.width * 0.875,
+      height: (_phoneSize.height * 0.45),
+      width: _phoneSize.width * 0.875,
       decoration: new BoxDecoration(
         color: Color.fromRGBO(255, 255, 255, 100),
         borderRadius: BorderRadius.circular(10.0),
@@ -85,7 +90,7 @@ class HomeView extends HomeState {
       child: new ModalProgressHUD(
         inAsyncCall: scraping,
         opacity: 0,
-        child: new Center(child: SimpleLineChart.withCustomData(rain)),
+        child: new Center(child: SimpleLineChart.withCustomData(weather)),
       ),
     );
   }
