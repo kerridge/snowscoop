@@ -39,8 +39,27 @@ abstract class HomeState extends State<Home> {
     });
   }
 
+  /// switches the selected button and display new data
   @protected
   void switchButton(String title) {
-    
+    switch (title) {
+      case "SNOW":
+        setState(() => selected =SelectedButton.SNOW);
+        break;
+      case "RAIN":
+        setState(() => selected =SelectedButton.RAIN);
+        break;
+      case "WIND":
+        setState(() => selected =SelectedButton.WIND);
+        break;
+      case "MIN":
+        setState(() => selected =SelectedButton.MIN);
+        break;
+      case "MAX":
+        setState(() => selected =SelectedButton.MAX);
+        break;
+      default:
+        break;
+    }
   }
 }

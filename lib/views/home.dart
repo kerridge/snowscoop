@@ -33,6 +33,9 @@ class HomeView extends HomeState {
                           children: <Widget>[
                             typeButton("RAIN"),
                             typeButton("SNOW"),
+                            typeButton("WIND"),
+                            typeButton("MIN"),
+                            typeButton("MAX"),
                           ],
                         ),
                       ],
@@ -60,9 +63,14 @@ class HomeView extends HomeState {
         elevation: 5.0,
         color: isSelected ? Colors.grey : Color(0xFF0085CA),
         child: new MaterialButton(
-          height: 30,
+          height: 10,
+          minWidth: 10,
           child: new Text(title),
-          onPressed: (() => switchButton(title)),
+          onPressed: () {
+            isSelected
+              ? print("disabled")
+              : switchButton(title);
+          },
         ));
   }
 
