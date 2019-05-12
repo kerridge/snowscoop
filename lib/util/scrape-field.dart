@@ -4,11 +4,13 @@ import 'package:http/http.dart'; // Contains a client for making API calls
 import 'package:html/parser.dart'; // Contains HTML parsers to generate a Document object
 import 'package:html/dom.dart'; // Contains DOM related classes for extracting data from elements
 
+import 'package:snowscoop/models/ski-field.dart';
+
 var scrapeURL = 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid';
 var _rainQuery = 'td.rainy > b > span.rain';
 var _snowQuery = 'td.snowy > b > span.snow';
 
-Future initiate(String weather) async {
+Future initiate(String weather, Field field) async {
   var client = Client();
   String query = _querySwitcher(weather);
 
@@ -51,6 +53,7 @@ String _querySwitcher(String weather) {
 
       break;
     case "MAX":
+      
       break;
     default:
       break;

@@ -51,7 +51,7 @@ class SimpleLineChart extends StatelessWidget {
         domainFn: (LinearWeather weather, _) => weather.day,
         measureFn: (LinearWeather weather, _) => weather.level,
         data: data,
-      )
+      ),
     ];
   }
 

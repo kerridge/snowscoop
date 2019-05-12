@@ -4,6 +4,7 @@ import 'package:snowscoop/views/home.dart';
 import 'package:snowscoop/util/scrape-field.dart' as scraper;
 // enum for current button
 import 'package:snowscoop/models/enums/current-weather.dart';
+import 'package:snowscoop/models/ski-field.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -17,6 +18,9 @@ abstract class HomeState extends State<Home> {
   bool scraping = true;
   var selected = SelectedButton.SNOW;
 
+  // array of ski fields
+  List<Field> skifields = new List();
+
   @override
   void initState() {
     super.initState();
@@ -26,28 +30,39 @@ abstract class HomeState extends State<Home> {
       weather[i] = 0;
     }
 
-    scrapeField("SNOW");
+    // init fields
+    _initFields();
+
+    _scrapeField("SNOW");
   }
 
-  void scrapeField(String scrapeQuery) async {
+  void _scrapeField(String scrapeQuery) async {
     setState (() => scraping = true);
 
-    weather = await scraper.initiate(scrapeQuery);
+    weather = await scraper.initiate(scrapeQuery, skifields[0]);
 
     setState (() => scraping = false);
   }
 
+  /// initializing
+  void _initFields() {
+    Field temp = new Field('Cardrona', 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid');
+    skifields.add(temp);
+
+    temp = new Field('Coronet Peak', 'https://www.snow-forecast.com/resorts/Coronet-Peak/6day/mid');
+    skifields.add(temp);
+  }
 
   /// switches the selected button and displays new data
   @protected
   void switchButton(String title) {
     switch (title) {
       case "SNOW":
-        scrapeField(title);
+        _scrapeField(title);
         setState(() => selected =SelectedButton.SNOW);
         break;
       case "RAIN":
-        scrapeField(title);
+        _scrapeField(title);
         setState(() => selected =SelectedButton.RAIN);
         break;
       case "WIND":
