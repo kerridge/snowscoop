@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:snowscoop/views/home.dart';
 import 'package:snowscoop/util/scrape-field.dart' as scraper;
+// enum for current button
+import 'package:snowscoop/models/current-button.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,12 +13,20 @@ class Home extends StatefulWidget {
 abstract class HomeState extends State<Home> {
   // TEMP VAL
   @protected
-  List<int> rain = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+  List<int> rain = new List(20);
   bool scraping = true;
+  var selected = SelectedButton.SNOW;
 
   @override
   void initState() {
     super.initState();
+
+    // initialize data arrays
+    for (int i = 0; i < 20; i++) {
+      rain[i] = 0;
+    }
+
+    print(selected.toString());
 
     scrapeField();
   }
