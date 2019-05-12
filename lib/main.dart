@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snowscoop/util/routes.dart';
-// import 'package:snowscoop/util/scrape-field.dart' as scraper;
 
 void main() => runApp(MyApp());
 
