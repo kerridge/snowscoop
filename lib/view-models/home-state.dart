@@ -19,7 +19,7 @@ abstract class HomeState extends State<Home> {
   var selected = SelectedButton.SNOW;
 
   // array of ski fields
-  List<Field> skifields = new List();
+  List<Field> skifields;
 
   @override
   void initState() {
@@ -46,11 +46,12 @@ abstract class HomeState extends State<Home> {
 
   /// initializing
   void _initFields() {
-    Field temp = new Field('Cardrona', 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid');
-    skifields.add(temp);
+    skifields = [
+      new Field('Cardrona', 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid'),
+      new Field('Coronet Peak', 'https://www.snow-forecast.com/resorts/Coronet-Peak/6day/mid'),
 
-    temp = new Field('Coronet Peak', 'https://www.snow-forecast.com/resorts/Coronet-Peak/6day/mid');
-    skifields.add(temp);
+      
+    ];
   }
 
   /// switches the selected button and displays new data
