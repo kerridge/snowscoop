@@ -10,12 +10,13 @@ var scrapeURL = 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid';
 var _rainQuery = 'td.rainy > b > span.rain';
 var _snowQuery = 'td.snowy > b > span.snow';
 
-Future initiate(String weather, Field field) async {
+Future initiate(String weatherType, Field field) async {
   var client = Client();
-  String query = _querySwitcher(weather);
+  String query = _querySwitcher(weatherType);
 
+  // scrape the DOM from the passed field's URL
   Response res = await client.get(
-    scrapeURL
+    field.url
   );
 
   // Use html parser and query selector
@@ -53,7 +54,7 @@ String _querySwitcher(String weather) {
 
       break;
     case "MAX":
-      
+
       break;
     default:
       break;

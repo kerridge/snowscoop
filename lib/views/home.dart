@@ -93,7 +93,7 @@ class HomeView extends HomeState {
         child: new Center(
           child: new Padding(
             padding: EdgeInsets.all(10),
-            child: SimpleLineChart.withCustomData(weather)
+            child: SimpleLineChart.withRegionData(fieldsByRegion['Otago'], selected)
         ),
         ),
       ),

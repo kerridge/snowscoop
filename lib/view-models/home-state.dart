@@ -16,10 +16,11 @@ abstract class HomeState extends State<Home> {
   @protected
   List<int> weather = new List(20);
   bool scraping = true;
+
   var selected = SelectedButton.SNOW;
 
   // array of ski fields
-  List<Field> skifields;
+  Map<String, List<Field>> fieldsByRegion;
 
   @override
   void initState() {
@@ -33,25 +34,39 @@ abstract class HomeState extends State<Home> {
     // init fields
     _initFields();
 
-    _scrapeField("SNOW");
+    // _scrapeField("SNOW");
+    _scrapeRegion("SNOW", 'Otago');
   }
 
   void _scrapeField(String scrapeQuery) async {
     setState (() => scraping = true);
 
-    weather = await scraper.initiate(scrapeQuery, skifields[0]);
+    weather = await scraper.initiate(scrapeQuery, fieldsByRegion['Otago'][0]);
 
     setState (() => scraping = false);
   }
 
+  void _scrapeRegion(String weatherType, String region) async {
+    for (var i = 0; i < fieldsByRegion[region].length; i++) {
+
+      fieldsByRegion[region][i].weather[weatherType] = 
+      await scraper.initiate(
+        weatherType,
+        fieldsByRegion[region][i]
+      );
+
+    }
+  }
+
   /// initializing
   void _initFields() {
-    skifields = [
+    List<Field> otago = [
       new Field('Cardrona', 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid'),
       new Field('Coronet Peak', 'https://www.snow-forecast.com/resorts/Coronet-Peak/6day/mid'),
-
-      
     ];
+
+    fieldsByRegion.putIfAbsent('Otago', () => otago);
+      
   }
 
   /// switches the selected button and displays new data
