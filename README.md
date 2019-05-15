@@ -1,4 +1,5 @@
 # SnowScoop
+![alt text](https://github.com/kerridge/snowscoop/blob/master/icon-2.png)
 
 A Web Scraping app written in Flutter/Dart. 
 
