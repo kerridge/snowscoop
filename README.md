@@ -1,7 +1,14 @@
 # SnowScoop
 ![alt text](https://github.com/kerridge/snowscoop/blob/master/icon-2.png)
 
-A Web Scraping app written in Flutter/Dart. 
+A Web Scraping app written in Flutter/Dart.
+
+The goal of this application was to learn more about Flutter and to explore some new packages. 
+Ideally I would write a Python scraper that gets called every hour or so and writes the data to a NoSQL db. Then just read JSON directly from the app. 
+
+Instead I have been scraping on the device itself, which is not good for usability or load times, but it achieves what I need it to for a test application.
+
+![alt text](https://github.com/kerridge/snowscoop/blob/master/phonr.png)
 
 ---
 # MVVM Architecture
@@ -19,10 +26,3 @@ The idea is that there are 3 main parts, much like MVC. Our main goal is to move
 In Flutter, we achieve this using 3 different files. The view is represented as widgets, the model is data classes, and the view-model is an abstract class that extends the view. Theoretically, if we separated all logic properly, the view-model could be reused in a web application, as it has no dependencies to Flutter. You can read more about our implementation [here.](https://medium.com/flutter-community/easily-navigate-through-your-flutter-code-by-separating-view-and-view-model-240026191106)
 
 ---
-
-The goal of this application was to learn more about Flutter and to explore some new packages. 
-Ideally I would write a Python scraper that gets called every hour or so and writes the data to a NoSQL db. Then just read JSON directly from the app. 
-
-Instead I have been scraping on the device itself, which is not good for usability or load times, but it achieves what I need it to for a test application.
-
-![alt text](https://github.com/kerridge/snowscoop/blob/master/phonr.png)
