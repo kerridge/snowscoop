@@ -12,7 +12,6 @@ Instead I have been scraping on the device itself, which is not good for usabili
 
 ---
 # MVVM Architecture
----
 **This is the architecture used across the entire application.**
 
 The idea is that there are 3 main parts, much like MVC. Our main goal is to move as much of the _state_ and the _logic_ as possible into a separate class called the **View-Model**. This **View-Model** class contains the business logic and serves as the _mediator_ between the **View**, and **Model** classes.
