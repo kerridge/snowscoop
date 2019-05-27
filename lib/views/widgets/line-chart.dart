@@ -25,12 +25,12 @@ class SimpleLineChart extends StatelessWidget {
     );
   }
 
-  factory SimpleLineChart.withRegionData(List<Field> fields, var selected) {
-    return new SimpleLineChart(
-      _buildSeriesFromRegion(fields, selected),
-      animate: true,
-    );
-  }
+  // factory SimpleLineChart.withRegionData(List<Field> fields, var selected) {
+  //   return new SimpleLineChart(
+  //     _buildSeriesFromRegion(fields, selected),
+  //     animate: true,
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -42,27 +42,27 @@ class SimpleLineChart extends StatelessWidget {
   }
 
 
-  static List<charts.Series<LinearWeather, int>> _buildSeriesFromRegion(List<Field> fields, var selected) {
+  // static List<charts.Series<LinearWeather, int>> _buildSeriesFromRegion(List<Field> fields, var selected) {
 
-    var weatherKey = selected.toString().split('.')[1];
-    // List<List<int>> weather = new List(fields.length);
+  //   var weatherKey = selected.toString().split('.')[1];
+  //   // List<List<int>> weather = new List(fields.length);
 
-    var output = new List<charts.Series<LinearWeather, int>>();
+  //   var output = new List<charts.Series<LinearWeather, int>>();
 
-    for(int i = 0; i < fields.length; i++) {
-      output.add(
-        new charts.Series<LinearWeather, int>(
-        id: 'Weather',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        areaColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
-        domainFn: (LinearWeather weather, _) => weather.day,
-        measureFn: (LinearWeather weather, _) => weather.level,
-        data: fields[i].weather[weatherKey],
-      ));
-    }
+  //   for(int i = 0; i < fields.length; i++) {
+  //     output.add(
+  //       new charts.Series<LinearWeather, int>(
+  //       id: 'Weather',
+  //       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+  //       areaColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
+  //       domainFn: (LinearWeather weather, _) => weather.day,
+  //       measureFn: (LinearWeather weather, _) => weather.level,
+  //       data: fields[i].weather[weatherKey],
+  //     ));
+  //   }
 
-    return output;
-  }
+  //   return output;
+  // }
 
   /// Build a series of x,y data points
   static List<charts.Series<LinearWeather, int>> _buildSeries(List<int> weather) {
