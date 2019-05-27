@@ -16,7 +16,7 @@ class SheetsConnection {
   
   static const _SHEET_KEY = '18kc6EsRQuMGBw2JtIoTzeVNTTd0w2xAmWQ3cfHifmrI';
 
-  Future init() async {
+  Future connect() async {
     
     final _key = {
       "type": "service_account",
@@ -56,8 +56,8 @@ class SheetsConnection {
 
 
 
-
-  Future getFieldWeather(Field field) async {
+  /// retreives all weather values and updates the model passed by reference
+  Future<Field> getFieldWeather(Field field) async {
     List<String> ranges = [
       '${field.title}!B1:V1',
       '${field.title}!B2:V2',
@@ -67,7 +67,7 @@ class SheetsConnection {
     ];
 
     print('Retreiving values');
-    api.spreadsheets.values
+    await api.spreadsheets.values
       .batchGet(_SHEET_KEY, ranges: ranges)
       .then((sheets.BatchGetValuesResponse r) {
 
@@ -80,6 +80,8 @@ class SheetsConnection {
 
         print('Batched GET request completed');
       });
+
+    return field;
   }
 
   /// Takes the response object and transforms to List<int>

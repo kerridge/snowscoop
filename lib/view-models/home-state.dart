@@ -15,17 +15,13 @@ class Home extends StatefulWidget {
 }
 
 abstract class HomeState extends State<Home> {
-  // TEMP VAL
   @protected
-  List<int> weather = new List(20);
   bool scraping = true;
 
   var _db = new SheetsConnection();
 
   var selected = SelectedButton.SNOW;
 
-  // array of ski fields
-  Map<String, dynamic> fieldsByRegion = new Map();
 
   @override
   void initState() {
@@ -41,40 +37,17 @@ abstract class HomeState extends State<Home> {
   Future updateField() async {
     
     // make API connection
-    await _db.init()
+    await _db.connect()
       .then((dynamic res) { // after connection accepted 
-        _db.getFieldWeather(field);
-
-        _db.closeConnection();
+        
+        print('yo');
+        
     });
 
-    
-
-    // db.closeConnection();
+    field = await _db.getFieldWeather(field);
+    _db.closeConnection();
   }
 
-
-
-
-  void _scrapeField(String scrapeQuery) async {
-    setState (() => scraping = true);
-
-    weather = await scraper.initiate(scrapeQuery, fieldsByRegion['Otago'][0]);
-
-    setState (() => scraping = false);
-  }
-
-  void _scrapeRegion(String weatherType, String region) async {
-    for (var i = 0; i < fieldsByRegion[region].length; i++) {
-
-      fieldsByRegion[region][i].weather[weatherType] = 
-      await scraper.initiate(
-        weatherType,
-        fieldsByRegion[region][i]
-      );
-
-    }
-  }
 
   /// initializing
   void _initFields() {
@@ -92,11 +65,9 @@ abstract class HomeState extends State<Home> {
   void switchButton(String title) {
     switch (title) {
       case "SNOW":
-        _scrapeField(title);
         setState(() => selected =SelectedButton.SNOW);
         break;
       case "RAIN":
-        _scrapeField(title);
         setState(() => selected =SelectedButton.RAIN);
         break;
       case "WIND":
