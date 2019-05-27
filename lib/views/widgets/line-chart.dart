@@ -56,6 +56,12 @@ class SimpleLineChart extends StatelessWidget {
     var output = new List<charts.Series<LinearWeather, int>>();
 
     for (Field field in fields) {
+      final data = new List<LinearWeather>();
+
+      for (int i = 0; i < 22; i++) {
+        var val = field.getWeatherMaped()[weatherKey][i];
+        data[i] = new LinearWeather(i, val);
+      }
       
       output.add(
         new charts.Series<LinearWeather, int>(
@@ -64,8 +70,8 @@ class SimpleLineChart extends StatelessWidget {
         areaColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
         domainFn: (LinearWeather weather, _) => weather.day,
         measureFn: (LinearWeather weather, _) => weather.level,
-        data: field.getWeatherMaped()[weatherKey]
-        ));
+        data: data
+      ));
     }
 
     return output;
