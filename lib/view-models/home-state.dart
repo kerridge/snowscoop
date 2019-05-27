@@ -23,29 +23,34 @@ abstract class HomeState extends State<Home> {
 
   var selected = SelectedButton.SNOW;
 
-  Fields skifields =initFields();
+  Fields skifields =_initFields();
 
+  
 
   @override
   void initState() {
     super.initState();
 
-    updateField();
 
-    
+    List<Field> otago = skifields.getFieldsByRegion('Otago');
 
-
-
-    
+    updateRegionWeather(otago);
     
     print('done');
   }
 
-  Field field = new Field('Cardrona', 'Otago');
+  @override
+  void dispose() {
+    // close our db client connection
+    _db.closeConnection();
+    super.dispose();
+  }
+
+  // Field field = new Field('Cardrona', 'Otago');
 
   /// initializes our list of `Field` objects and appends
   /// them to a `Fields` object.
-  static Fields initFields() {
+  static Fields _initFields() {
 
     List<Field> fields = [
       new Field('Coronet Peak', 'Otago'),
@@ -58,7 +63,9 @@ abstract class HomeState extends State<Home> {
     // List<Field> otago = allFields.getFieldsByRegion('Otago');
   }
 
-  Future updateField() async {
+  /// takes a `List<Field>` object and updates their weather values
+  /// with data from our sheets backend
+  Future updateRegionWeather(List<Field> region) async {
     
     // make API connection
     await _db.connect()
@@ -67,9 +74,11 @@ abstract class HomeState extends State<Home> {
         print('yo');
         
     });
-
-    field = await _db.getFieldWeather(field);
-    _db.closeConnection();
+    for (Field field in region) {
+      field = await _db.getFieldWeather(field);
+    }
+    
+    
   }
 
 
