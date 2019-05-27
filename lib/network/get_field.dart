@@ -9,16 +9,13 @@ class SheetsConnection {
   auth.AuthClient client;
   sheets.SheetsApi api; 
 
-  // constructor
-  // SheetsConnection(this.client, this.api);
+  // default constructor
   SheetsConnection();
 
-  
+  // the key from our spreadsheets url, needed to connect
   static const _SHEET_KEY = '18kc6EsRQuMGBw2JtIoTzeVNTTd0w2xAmWQ3cfHifmrI';
 
-  Future connect() async {
-    
-    final _key = {
+  final _key = {
       "type": "service_account",
       "project_id": "snowscoop",
       "private_key_id": "1dd6e41ba2a93b78d2f14a67fb1b838124a063b8",
@@ -31,6 +28,9 @@ class SheetsConnection {
       "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cli-admin%40snowscoop.iam.gserviceaccount.com"
     };
 
+  Future connect() async {
+    
+    // which Google API to use
     const _SCOPES = const [sheets.SheetsApi.SpreadsheetsScope];
 
     print('Attempting Google OAuth Connection...');

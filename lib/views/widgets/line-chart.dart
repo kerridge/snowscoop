@@ -2,6 +2,7 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:snowscoop/models/linear-weather.dart';
 import 'package:snowscoop/models/ski-field.dart';
+import 'package:snowscoop/models/all_fields.dart';
 
 class SimpleLineChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -25,6 +26,13 @@ class SimpleLineChart extends StatelessWidget {
     );
   }
 
+  factory SimpleLineChart.withFieldList(List<Field> fields, var selected) {
+    return new SimpleLineChart(
+      _buildSeriesFromFieldList(fields, selected),
+      animate: true
+    );
+  }
+
   // factory SimpleLineChart.withRegionData(List<Field> fields, var selected) {
   //   return new SimpleLineChart(
   //     _buildSeriesFromRegion(fields, selected),
@@ -41,6 +49,27 @@ class SimpleLineChart extends StatelessWidget {
       animate: animate);
   }
 
+  static List<charts.Series<LinearWeather, int>> _buildSeriesFromFieldList(List<Field> fields, var selected) {
+
+    var weatherKey = selected.toString().split('.')[1];
+
+    var output = new List<charts.Series<LinearWeather, int>>();
+
+    for (Field field in fields) {
+      
+      output.add(
+        new charts.Series<LinearWeather, int>(
+        id: 'Weather',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        areaColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
+        domainFn: (LinearWeather weather, _) => weather.day,
+        measureFn: (LinearWeather weather, _) => weather.level,
+        data: field.getWeatherMaped()[weatherKey]
+        ));
+    }
+
+    return output;
+  }
 
   // static List<charts.Series<LinearWeather, int>> _buildSeriesFromRegion(List<Field> fields, var selected) {
 

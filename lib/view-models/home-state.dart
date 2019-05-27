@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
 abstract class HomeState extends State<Home> {
   @protected
   bool scraping = true;
-
+  List<Field> otago;
   var _db = new SheetsConnection();
 
   var selected = SelectedButton.SNOW;
@@ -32,7 +32,7 @@ abstract class HomeState extends State<Home> {
     super.initState();
 
 
-    List<Field> otago = skifields.getFieldsByRegion('Otago');
+    otago = skifields.getFieldsByRegion('Otago');
 
     updateRegionWeather(otago);
     
