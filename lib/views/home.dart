@@ -13,43 +13,46 @@ class HomeView extends HomeState {
   Widget build(BuildContext context) {
     _phoneSize = MediaQuery.of(context).size;
 
-    return SafeArea(
-      child: Scaffold(
-        body: new Center(
-          child: new Column(
-            children: <Widget>[
-              new Row(
-                children: <Widget>[
-                  new Container(
-                    width: _phoneSize.width * 0.95,
-                    height: _phoneSize.height * 0.90,
-                    decoration: new BoxDecoration(
-                        color: Color.fromRGBO(13, 13, 14, 50).withOpacity(0.2)),
-                    child: new Column(
-                      children: <Widget>[
-                        SizedBox(height: (_phoneSize.height * 0.1)),
-                        graphContainer(),
-                        SizedBox(height: (_phoneSize.height * 0.01)),
-                        new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            typeButton("RAIN"),
-                            typeButton("SNOW"),
-                            typeButton("WIND"),
-                            typeButton("MIN"),
-                            typeButton("MAX"),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+    return new Scaffold(
+      
     );
+    // return SafeArea(
+    //   child: Scaffold(
+    //     body: new Center(
+    //       child: new Column(
+    //         children: <Widget>[
+    //           new Row(
+    //             children: <Widget>[
+    //               new Container(
+    //                 width: _phoneSize.width * 0.95,
+    //                 height: _phoneSize.height * 0.90,
+    //                 decoration: new BoxDecoration(
+    //                     color: Color.fromRGBO(13, 13, 14, 50).withOpacity(0.2)),
+    //                 child: new Column(
+    //                   children: <Widget>[
+    //                     SizedBox(height: (_phoneSize.height * 0.1)),
+    //                     graphContainer(),
+    //                     SizedBox(height: (_phoneSize.height * 0.01)),
+    //                     new Row(
+    //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //                       children: <Widget>[
+    //                         typeButton("RAIN"),
+    //                         typeButton("SNOW"),
+    //                         typeButton("WIND"),
+    //                         typeButton("MIN"),
+    //                         typeButton("MAX"),
+    //                       ],
+    //                     ),
+    //                   ],
+    //                 ),
+    //               ),
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 
   Widget typeButton(String title) {
