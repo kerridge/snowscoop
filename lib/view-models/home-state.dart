@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:snowscoop/views/home.dart';
-import 'package:snowscoop/util/scrape-field.dart' as scraper;
+
 // enum for current button
 import 'package:snowscoop/models/enums/current-weather.dart';
 import 'package:snowscoop/models/ski-field.dart';
 
 import 'package:snowscoop/network/get_field.dart';
+import 'package:snowscoop/models/all_fields.dart';
 
 
 class Home extends StatefulWidget {
@@ -22,17 +23,40 @@ abstract class HomeState extends State<Home> {
 
   var selected = SelectedButton.SNOW;
 
+  Fields skifields =initFields();
+
 
   @override
   void initState() {
     super.initState();
 
-
     updateField();
 
+    
+
+
+
+    
+    
+    print('done');
   }
 
-  Field field = new Field('Cardrona', 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid');
+  Field field = new Field('Cardrona', 'Otago');
+
+  /// initializes our list of `Field` objects and appends
+  /// them to a `Fields` object.
+  static Fields initFields() {
+
+    List<Field> fields = [
+      new Field('Coronet Peak', 'Otago'),
+      new Field('Cardrona', 'Otago'),
+      new Field('Round Hill', 'South Canterbury')
+    ];
+
+    return new Fields(fields);
+
+    // List<Field> otago = allFields.getFieldsByRegion('Otago');
+  }
 
   Future updateField() async {
     
@@ -48,17 +72,6 @@ abstract class HomeState extends State<Home> {
     _db.closeConnection();
   }
 
-
-  /// initializing
-  void _initFields() {
-    List<Field> otago = [
-      new Field('Cardrona', 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid'),
-      new Field('Coronet Peak', 'https://www.snow-forecast.com/resorts/Coronet-Peak/6day/mid'),
-    ];
-
-    fieldsByRegion.putIfAbsent('Otago', () => otago);
-      
-  }
 
   /// switches the selected button and displays new data
   @protected
