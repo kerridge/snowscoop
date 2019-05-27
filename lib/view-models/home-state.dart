@@ -20,6 +20,8 @@ abstract class HomeState extends State<Home> {
   List<int> weather = new List(20);
   bool scraping = true;
 
+  var _db = new SheetsConnection();
+
   var selected = SelectedButton.SNOW;
 
   // array of ski fields
@@ -32,14 +34,18 @@ abstract class HomeState extends State<Home> {
 
     updateField();
 
-    
   }
 
+  Field field = new Field('Cardrona', 'https://www.snow-forecast.com/resorts/Cardrona/6day/mid');
 
-  void updateField() async {
-    var db = new SheetsConnection();
-    await db.init().then((dynamic res) {
-      print('done');
+  Future updateField() async {
+    
+    // make API connection
+    await _db.init()
+      .then((dynamic res) { // after connection accepted 
+        _db.getFieldWeather(field);
+
+        _db.closeConnection();
     });
 
     

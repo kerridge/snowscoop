@@ -35,7 +35,7 @@ class SheetsConnection {
 
     print('Attempting Google OAuth Connection...');
     try{
-      auth
+      await auth
         .obtainAccessCredentialsViaServiceAccount(
             auth.ServiceAccountCredentials.fromJson(_key),
             _SCOPES,
@@ -45,15 +45,13 @@ class SheetsConnection {
 
           client = auth.authenticatedClient(http.Client(), cred);
           api = new sheets.SheetsApi(client);
-
+          return;
         });
     } on Exception catch(e) {
       print(e.toString());
       print('Connection Refused');
       return;
     }
-
-    return;
   }
 
 
@@ -63,6 +61,9 @@ class SheetsConnection {
     List<String> ranges = [
       '${field.title}!B1:V1',
       '${field.title}!B2:V2',
+      '${field.title}!B3:V3',
+      '${field.title}!B4:V4',
+      '${field.title}!B5:V5'
     ];
 
     print('Retreiving values');
@@ -70,55 +71,30 @@ class SheetsConnection {
       .batchGet(_SHEET_KEY, ranges: ranges)
       .then((sheets.BatchGetValuesResponse r) {
 
-        for (sheets.ValueRange v in r.valueRanges) {
-          print(v.values[0]);
-        }
+        
+        field.rain = _cleanValues(r.valueRanges[0]);
+        field.snow = _cleanValues(r.valueRanges[1]);
+        field.max =_cleanValues(r.valueRanges[2]);
+        field.min =_cleanValues(r.valueRanges[3]);
+        field.chill =_cleanValues(r.valueRanges[4]);
 
         print('Batched GET request completed');
       });
   }
 
+  /// Takes the response object and transforms to List<int>
+  List<dynamic> _cleanValues(dynamic res) {
+    List<dynamic> list = res.values[0]
+      .toList()
+      .map((val) => int.parse(val))
+      .toList();
+
+    return list;
+  }
+
   void closeConnection(){
+    print('Closing Connection');
     client.close();
   }
 
 }
-
-
-
-    
-    
-    
-
-    // // auth.clientViaServiceAccount(_key, _SCOPES).then((client) {
-
-    // print('getting oauth');
-    // auth
-    //   .obtainAccessCredentialsViaServiceAccount(
-    //       auth.ServiceAccountCredentials.fromJson(_key),
-    //       _SCOPES,
-    //       http.Client())
-    //   .then((auth.AccessCredentials cred) {
-    //     print('got oauth');
-
-    //     auth.AuthClient client = auth.authenticatedClient(http.Client(), cred);
-    //     SheetsApi api = new SheetsApi(client);
-
-    //     List<String> ranges = [
-    //       'Cardrona!B1:V1',
-    //       'Cardrona!B2:V2',
-    //     ];
-
-    //     print('Retreiving values');
-    //     api.spreadsheets.values
-    //         .batchGet(_spreadsheet_key, ranges: ranges)
-    //         .then((BatchGetValuesResponse r) {
-
-    //           for (ValueRange v in r.valueRanges) {
-    //             print(v.values[0]);
-    //           }
-
-    //           print('Batched GET request completed');
-    //           client.close();
-    //         });
-    //     });  

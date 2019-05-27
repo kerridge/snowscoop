@@ -9,6 +9,12 @@ class Field {
     'RAIN': null,
   };
 
+  List<dynamic> rain;
+  List<dynamic> snow;
+  List<dynamic> max;
+  List<dynamic> min;
+  List<dynamic> chill;
+
   String get title => _title;
   String get url => _url;
 
