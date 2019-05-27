@@ -58,7 +58,6 @@ abstract class HomeState extends State<Home> {
     };
 
     const _SCOPES = const [
-      // SpreadsheetsResourceApi,
       SheetsApi.SpreadsheetsScope
     ];
     
@@ -85,58 +84,23 @@ abstract class HomeState extends State<Home> {
           ]
       });
 
-    print('about to append');
-    api.spreadsheets.values
-        .append(vr, spreadsheet_key, 'A:J',
-            valueInputOption: 'USER_ENTERED')
-        .then((AppendValuesResponse r) {
-      print('append completed.');
-      client.close();
-    });
-      print('called append()');
-    });
-    print('ended?');
+    List<String> ranges = [
+      'Cardrona!B1:V1',
+      'Cardrona!B2:V2',
+    ];
 
+    print('Retreiving values');
+    api.spreadsheets.values
+        .batchGet(spreadsheet_key, ranges: ranges)
+        .then((BatchGetValuesResponse r) {
+          print(r.valueRanges[0].values[0]);
+          print(r.valueRanges[1].values[0]);
+          print('Batched GET request completed');
+          client.close();
+        });
+    });  
   }
 
-//   // Key for service account copied from downloaded file for demo purposes ;-)
-// final _key = {
-//   "type": "service_account",
-//   "project_id": //etc
-//   // ...
-//   // ...
-// };
-
-// print('getting oauth');
-// auth
-//     .obtainAccessCredentialsViaServiceAccount(
-//         auth.ServiceAccountCredentials.fromJson(_key),
-//         scopes,
-//         http.Client())
-//     .then((auth.AccessCredentials cred) {
-//   print('got oauth');
-
-//   auth.AuthClient client = auth.authenticatedClient(http.Client(), cred);
-//   SheetsApi api = new SheetsApi(client);
-//   ValueRange vr = new ValueRange.fromJson({
-//     "values": [
-//       [ // fields A - J
-//         "15/02/2019", "via API 3", "5", "3", "3", "3", "3", "3", "3", "3"
-//       ]
-//     ]
-//   });
-//   print('about to append');
-//   api.spreadsheets.values
-//       .append(vr, '1cl...spreadsheet_key...W5E', 'A:J',
-//           valueInputOption: 'USER_ENTERED')
-//       .then((AppendValuesResponse r) {
-//     print('append completed.');
-//     client.close();
-//   });
-//   print('called append()');
-// });
-// print('ended?');
-// }
 
 
 
