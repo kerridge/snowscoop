@@ -1,7 +1,7 @@
 enum SelectedButton {
   RAIN,
   SNOW,
-  WIND,
+  CHILL,
   MIN,
   MAX
 }

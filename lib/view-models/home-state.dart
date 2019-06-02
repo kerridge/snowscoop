@@ -25,7 +25,6 @@ abstract class HomeState extends State<Home> {
 
   Fields skifields =_initFields();
 
-  
 
   @override
   void initState() {
@@ -78,7 +77,7 @@ abstract class HomeState extends State<Home> {
       field = await _db.getFieldWeather(field);
     }
     
-    
+    setState(() => scraping = false);
   }
 
 
@@ -92,8 +91,8 @@ abstract class HomeState extends State<Home> {
       case "RAIN":
         setState(() => selected =SelectedButton.RAIN);
         break;
-      case "WIND":
-        setState(() => selected =SelectedButton.WIND);
+      case "CHILL":
+        setState(() => selected =SelectedButton.CHILL);
         break;
       case "MIN":
         setState(() => selected =SelectedButton.MIN);

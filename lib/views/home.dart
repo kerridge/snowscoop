@@ -38,7 +38,7 @@ class HomeView extends HomeState {
                           children: <Widget>[
                             typeButton("RAIN"),
                             typeButton("SNOW"),
-                            typeButton("WIND"),
+                            typeButton("CHILL"),
                             typeButton("MIN"),
                             typeButton("MAX"),
                           ],
@@ -96,7 +96,10 @@ class HomeView extends HomeState {
         child: new Center(
           child: new Padding(
             padding: EdgeInsets.all(10),
-            child: SimpleLineChart.withFieldList(otago, selected)
+            child: SimpleLineChart.withFieldList(
+              otago,
+              selected
+            )
         ),
         ),
       ),

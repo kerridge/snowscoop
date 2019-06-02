@@ -33,13 +33,6 @@ class SimpleLineChart extends StatelessWidget {
     );
   }
 
-  // factory SimpleLineChart.withRegionData(List<Field> fields, var selected) {
-  //   return new SimpleLineChart(
-  //     _buildSeriesFromRegion(fields, selected),
-  //     animate: true,
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return new charts.LineChart(
@@ -55,49 +48,43 @@ class SimpleLineChart extends StatelessWidget {
 
     var output = new List<charts.Series<LinearWeather, int>>();
 
-    for (Field field in fields) {
-      final data = new List<LinearWeather>();
+    var primaryColors = [
+      charts.MaterialPalette.blue.shadeDefault,
+      charts.MaterialPalette.green.shadeDefault,
+      charts.MaterialPalette.red.shadeDefault,
+      charts.MaterialPalette.purple.shadeDefault
+    ];
 
-      for (int i = 0; i < 22; i++) {
-        var val = field.getWeatherMaped()[weatherKey][i];
-        data[i] = new LinearWeather(i, val);
+    int i = 0;
+
+    // var shadeColors = [
+    //   charts.MaterialPalette.blue.shadeDefault.lighter];
+
+    for (Field field in fields) {
+      int weatherLength = field.rain == null ? 21 : field.rain.length;
+
+      final data = new List<LinearWeather>(weatherLength);
+
+      var val = field.getWeatherMapped()[weatherKey];
+      for (int i = 0; i < weatherLength; i++) {
+        data[i] = new LinearWeather(i, val[i]);
       }
       
       output.add(
         new charts.Series<LinearWeather, int>(
         id: 'Weather',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        areaColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
+        colorFn: (_, __) => primaryColors[i],
+        areaColorFn: (_, __) => primaryColors[i].lighter,
         domainFn: (LinearWeather weather, _) => weather.day,
         measureFn: (LinearWeather weather, _) => weather.level,
         data: data
       ));
+
+      i++;
     }
 
     return output;
   }
-
-  // static List<charts.Series<LinearWeather, int>> _buildSeriesFromRegion(List<Field> fields, var selected) {
-
-  //   var weatherKey = selected.toString().split('.')[1];
-  //   // List<List<int>> weather = new List(fields.length);
-
-  //   var output = new List<charts.Series<LinearWeather, int>>();
-
-  //   for(int i = 0; i < fields.length; i++) {
-  //     output.add(
-  //       new charts.Series<LinearWeather, int>(
-  //       id: 'Weather',
-  //       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-  //       areaColorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault.lighter,
-  //       domainFn: (LinearWeather weather, _) => weather.day,
-  //       measureFn: (LinearWeather weather, _) => weather.level,
-  //       data: fields[i].weather[weatherKey],
-  //     ));
-  //   }
-
-  //   return output;
-  // }
 
   /// Build a series of x,y data points
   static List<charts.Series<LinearWeather, int>> _buildSeries(List<int> weather) {

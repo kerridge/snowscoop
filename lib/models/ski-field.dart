@@ -12,7 +12,7 @@ class Field {
   List<dynamic> min;
   List<dynamic> chill;
 
-  Map<String, List<dynamic>> getWeatherMaped() {
+  Map<String, List<dynamic>> getWeatherMapped() {
     if (rain !=null) {
       return {
         'RAIN':rain,
@@ -35,6 +35,6 @@ class Field {
   String get region => _region;
 
   Field(this._title, this._region) {
-    mockData = new List.generate(21, (_) => 3);
+    mockData = new List.generate(21, (_) => 0);
   }
 }
