@@ -14,7 +14,7 @@ class HomeView extends HomeState {
     _phoneSize = MediaQuery.of(context).size;
 
     // return new Scaffold(
-      
+
     // );
     return SafeArea(
       child: Scaffold(
@@ -43,6 +43,38 @@ class HomeView extends HomeState {
                             typeButton("MAX"),
                           ],
                         ),
+                        new Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Container(
+                                height: _phoneSize.height * 0.08,
+                                width: _phoneSize.width * 0.9,
+                                color: Colors.white54,
+                                child: new Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    new Column( // colored square
+                                      children: <Widget>[
+                                        new Material(
+                                          
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          color: Colors.blue,
+                                          shadowColor: Colors.lightBlueAccent.shade100,
+                                          elevation: 5.0,
+                                          child: 
+                                          new Container(
+                                            margin: EdgeInsets.only(top: 10, left: 10),
+                                            height: _phoneSize.height * 0.06,
+                                            width: _phoneSize.width * 0.1,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                )),
+                          ],
+                        )
                       ],
                     ),
                   ),
@@ -63,23 +95,21 @@ class HomeView extends HomeState {
     }
 
     return new Container(
-      width: _phoneSize.width * 0.18,
-      child: new Material(
-        borderRadius: BorderRadius.circular(10.0),
-        shadowColor: Colors.lightBlueAccent.shade100,
-        elevation: 5.0,
-        color: isSelected ? Colors.grey : Color(0xFF0085CA),
-        child: new MaterialButton(
-          child: new Text(
-            title,
-            style: new TextStyle(
-              fontSize: 12
-            ),
-          ),
-          onPressed: () {
-            isSelected ? print("disabled") : switchButton(title);
-          },
-        )));
+        width: _phoneSize.width * 0.18,
+        child: new Material(
+            borderRadius: BorderRadius.circular(10.0),
+            shadowColor: Colors.lightBlueAccent.shade100,
+            elevation: 5.0,
+            color: isSelected ? Colors.grey : Color(0xFF0085CA),
+            child: new MaterialButton(
+              child: new Text(
+                title,
+                style: new TextStyle(fontSize: 12),
+              ),
+              onPressed: () {
+                isSelected ? print("disabled") : switchButton(title);
+              },
+            )));
   }
 
   Widget graphContainer() {
@@ -95,12 +125,8 @@ class HomeView extends HomeState {
         opacity: 0,
         child: new Center(
           child: new Padding(
-            padding: EdgeInsets.all(10),
-            child: SimpleLineChart.withFieldList(
-              otago,
-              selected
-            )
-        ),
+              padding: EdgeInsets.all(10),
+              child: SimpleLineChart.withFieldList(otago, selected)),
         ),
       ),
     );
