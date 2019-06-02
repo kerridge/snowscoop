@@ -71,11 +71,14 @@ class SimpleLineChart extends StatelessWidget {
         data[i] = new LinearWeather(i, val[i]);
       }
       
+      // make a copy so it's not referencing array
+      var currentColor = primaryColors[i];
+
       output.add(
         new charts.Series<LinearWeather, int>(
         id: field.title,
-        colorFn: (_, __) => primaryColors[i],
-        areaColorFn: (_, __) => primaryColors[i].lighter,
+        colorFn: (_, __) => currentColor,
+        areaColorFn: (_, __) => currentColor.lighter,
         domainFn: (LinearWeather weather, _) => weather.day,
         measureFn: (LinearWeather weather, _) => weather.level,
         data: data
