@@ -51,7 +51,8 @@ class SimpleLineChart extends StatelessWidget {
     var primaryColors = [
       charts.MaterialPalette.blue.shadeDefault,
       charts.MaterialPalette.green.shadeDefault,
-      charts.MaterialPalette.red.shadeDefault,
+      charts.MaterialPalette.purple.shadeDefault,
+      charts.MaterialPalette.yellow.shadeDefault,
       charts.MaterialPalette.purple.shadeDefault
     ];
 
@@ -72,7 +73,7 @@ class SimpleLineChart extends StatelessWidget {
       
       output.add(
         new charts.Series<LinearWeather, int>(
-        id: 'Weather',
+        id: field.title,
         colorFn: (_, __) => primaryColors[i],
         areaColorFn: (_, __) => primaryColors[i].lighter,
         domainFn: (LinearWeather weather, _) => weather.day,
