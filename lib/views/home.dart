@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:snowscoop/view-models/home-state.dart';
 import 'package:snowscoop/views/widgets/line-chart.dart';
 
-import 'package:snowscoop/util/graph-util.dart';
 import 'package:snowscoop/models/ski-field.dart';
 // import 'package:snowscoop/models/enums/current-button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -15,11 +14,12 @@ class HomeView extends HomeState {
     Colors.blue,
     Colors.green,
     Colors.red,
+    Colors.purple,
   ];
+
   @override
   Widget build(BuildContext context) {
     _phoneSize = MediaQuery.of(context).size;
-    // var entireKey = _buildEntireKey(otago);
 
     // return new Scaffold(
 
@@ -28,57 +28,56 @@ class HomeView extends HomeState {
       color: Colors.green,
       child: SafeArea(
         child: Scaffold(
-          body: new Center(
-            child: new Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    new Container(
-                      width: _phoneSize.width * 0.95,
-                      height: _phoneSize.height * 0.90,
-                      decoration: new BoxDecoration(
-                          color:
-                              Color.fromRGBO(13, 13, 14, 50).withOpacity(0.2)),
-                      child: new Column(
-                        children: <Widget>[
-                          SizedBox(height: (_phoneSize.height * 0.08)),
-                          graphContainer(),
-                          SizedBox(height: (_phoneSize.height * 0.015)),
-                          new Row(
-                            // button row
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              typeButton("RAIN"),
-                              typeButton("SNOW"),
-                              typeButton("CHILL"),
-                              typeButton("MIN"),
-                              typeButton("MAX"),
-                            ],
-                          ),
-                          new Container(
-                              height: _phoneSize.height * 0.3,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  itemCount: otago == null ? 0 : otago.length * 2,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return _buildEntireKey(otago)[index];
-                                  })),
-                        ],
-                      ),
+          body: new Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              new Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  new Container(
+                    width: _phoneSize.width * 0.95,
+                    height: _phoneSize.height * 0.90,
+                    decoration: new BoxDecoration(
+                        color: Color.fromRGBO(13, 13, 14, 50).withOpacity(0.2)),
+                    child: new Column(
+                      children: <Widget>[
+                        SizedBox(height: (_phoneSize.height * 0.08)),
+                        graphContainer(),
+                        SizedBox(height: (_phoneSize.height * 0.015)),
+                        new Row(
+                          // button row
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            _typeButton("RAIN"),
+                            _typeButton("SNOW"),
+                            _typeButton("CHILL"),
+                            _typeButton("MIN"),
+                            _typeButton("MAX"),
+                          ],
+                        ),
+                        new Container(
+                            height: _phoneSize.height * 0.3,
+                            child: ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: otago == null ? 0 : otago.length * 2,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return _buildEntireKey(otago)[index];
+                                })),
+                      ],
                     ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
+  /// Builds a list of graph key widgets to fill our list builder.
+  /// Takes a list of `Field` objects
   List<Widget> _buildEntireKey(List<Field> fields) {
     List<Widget> listView = new List();
 
@@ -87,13 +86,16 @@ class HomeView extends HomeState {
       // spacing
       listView.add(SizedBox(height: (_phoneSize.height * 0.01)));
       // key object
-      listView.add(graphKeyItem(field.title, primaryColors[i]));
+      listView.add(_graphKeyItem(field.title, primaryColors[i]));
     }
 
     return listView;
   }
 
-  Widget graphKeyItem(String title, var color) {
+
+  /// A widget to represent a graph key item.
+  /// Takes a `String` label and a `Color` to match graph line
+  Widget _graphKeyItem(String label, Color color) {
     return new Row(
       // graph key
       mainAxisAlignment: MainAxisAlignment.center,
@@ -104,8 +106,8 @@ class HomeView extends HomeState {
           elevation: 4.0,
           color: Colors.white,
           child: new Container(
-              padding: EdgeInsets.only(left: _phoneSize.width * 0.015),
-              height: _phoneSize.height * 0.065,
+              padding: EdgeInsets.only(left: _phoneSize.width * 0.025),
+              height: 50,
               width: _phoneSize.width * 0.875,
               child: new Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,8 +120,8 @@ class HomeView extends HomeState {
                         borderRadius: BorderRadius.circular(10.0),
                         color: color,
                         child: new Container(
-                          height: _phoneSize.height * 0.045,
-                          width: _phoneSize.width * 0.075,
+                          height: 30,
+                          width: 30,
                         ),
                       )
                     ],
@@ -130,9 +132,9 @@ class HomeView extends HomeState {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         new Container(
-                          width: _phoneSize.width * 0.6,
+                          width: _phoneSize.width * 0.60,
                           child: new Text(
-                            title,
+                            label,
                             style: new TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w500),
                           ),
@@ -153,7 +155,8 @@ class HomeView extends HomeState {
     );
   }
 
-  Widget typeButton(String title) {
+  /// A button widget for switching weather type
+  Widget _typeButton(String title) {
     bool isSelected = false;
 
     if (selected.toString() == "SelectedButton." + title) {
@@ -163,10 +166,14 @@ class HomeView extends HomeState {
     return new Container(
         width: _phoneSize.width * 0.17,
         child: new Material(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10.0),
+              bottomRight: Radius.circular(10.0),
+              topRight: Radius.circular(10.0),
+            ),
             shadowColor: Colors.lightBlueAccent.shade100,
             elevation: 5.0,
-            color: isSelected ? Colors.grey : Color(0xFF0085CA),
+            color: isSelected ? Colors.grey : Colors.white,
             child: new MaterialButton(
               child: new Text(
                 title,
@@ -177,6 +184,7 @@ class HomeView extends HomeState {
               },
             )));
   }
+
 
   Widget graphContainer() {
     return new Container(

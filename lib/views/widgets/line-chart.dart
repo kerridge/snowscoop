@@ -51,9 +51,9 @@ class SimpleLineChart extends StatelessWidget {
     var primaryColors = [
       charts.MaterialPalette.blue.shadeDefault,
       charts.MaterialPalette.green.shadeDefault,
+      charts.MaterialPalette.red.shadeDefault,
       charts.MaterialPalette.purple.shadeDefault,
-      charts.MaterialPalette.yellow.shadeDefault,
-      charts.MaterialPalette.purple.shadeDefault
+      charts.MaterialPalette.yellow.shadeDefault
     ];
 
     int i = 0;
