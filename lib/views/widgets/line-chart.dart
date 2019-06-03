@@ -58,9 +58,6 @@ class SimpleLineChart extends StatelessWidget {
 
     int i = 0;
 
-    // var shadeColors = [
-    //   charts.MaterialPalette.blue.shadeDefault.lighter];
-
     for (Field field in fields) {
       int weatherLength = field.rain == null ? 21 : field.rain.length;
 
