@@ -19,7 +19,7 @@ class HomeView extends HomeState {
   @override
   Widget build(BuildContext context) {
     _phoneSize = MediaQuery.of(context).size;
-    var entireKey = _buildEntireKey(otago);
+    // var entireKey = _buildEntireKey(otago);
 
     // return new Scaffold(
 
@@ -61,10 +61,10 @@ class HomeView extends HomeState {
                               height: _phoneSize.height * 0.3,
                               child: ListView.builder(
                                   scrollDirection: Axis.vertical,
-                                  itemCount: otago == null ? 0 : otago.length,
+                                  itemCount: otago == null ? 0 : otago.length * 2,
                                   itemBuilder:
                                       (BuildContext context, int index) {
-                                    return entireKey[index];
+                                    return _buildEntireKey(otago)[index];
                                   })),
                         ],
                       ),
@@ -85,7 +85,7 @@ class HomeView extends HomeState {
     for (int i = 0; i < fields.length; i++) {
       Field field = fields[i];
       // spacing
-      listView.add(SizedBox(height: (_phoneSize.height * 0.015)));
+      listView.add(SizedBox(height: (_phoneSize.height * 0.01)));
       // key object
       listView.add(graphKeyItem(field.title, primaryColors[i]));
     }
