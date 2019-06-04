@@ -39,10 +39,20 @@ class HomeView extends HomeState {
                     width: _phoneSize.width * 0.95,
                     height: _phoneSize.height * 0.90,
                     decoration: new BoxDecoration(
-                        color: Color.fromRGBO(13, 13, 14, 50).withOpacity(0.2)),
+                        // color: Color.fromRGBO(1, 1, 1, 50).withOpacity(0.2)),
+                        color: Colors.black26
+                    ),
                     child: new Column(
                       children: <Widget>[
-                        SizedBox(height: (_phoneSize.height * 0.08)),
+                        SizedBox(height: (_phoneSize.height * 0.02)),
+                        new Text(
+                          'Snow (cm)',
+                          style: new TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600
+                          ),
+                        ),
+                        SizedBox(height: (_phoneSize.height * 0.02)),
                         graphContainer(),
                         SizedBox(height: (_phoneSize.height * 0.015)),
                         new Row(
@@ -173,7 +183,7 @@ class HomeView extends HomeState {
             ),
             shadowColor: Colors.lightBlueAccent.shade100,
             elevation: 5.0,
-            color: isSelected ? Colors.grey : Colors.white,
+            color: isSelected ? Colors.blueAccent : Colors.white,
             child: new MaterialButton(
               child: new Text(
                 title,
@@ -191,7 +201,7 @@ class HomeView extends HomeState {
       height: (_phoneSize.height * 0.4),
       width: _phoneSize.width * 0.875,
       decoration: new BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 100),
+        color: Color.fromRGBO(255, 255, 255, 1),
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: new ModalProgressHUD(
