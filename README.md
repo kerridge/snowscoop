@@ -17,7 +17,7 @@ I am using Google Sheets as a backend because it's unique, and a lot of people a
 
 
 ![alt text](https://github.com/kerridge/snowscoop/blob/master/images/current.jpg)
-- This is the current state of the UI. The graphed data from the 3rd series and greater is incorrect
+- This is the current state of the UI
 ---
 # MVVM Architecture
 **This is the architecture used across the entire application.**
