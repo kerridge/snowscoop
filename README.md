@@ -4,9 +4,10 @@
 A Web Scraping app written in Flutter/Dart.
 
 The goal of this application was to learn more about Flutter and to explore some new packages. 
-Currently I am writing a Python scraper that gets called every hour or so and writes the data to a google sheets CSV, but until then I scrape through the app
 
-Instead I have been scraping on the device itself, which is not good for usability or load times, but it achieves what I need it to for a test application.
+I have written a [web scraper in Python 3.7](https://www.github.com/kerridge/pythonsheets) which is responsible for scraping values from a weather website, and then uploading them to Google Sheets using their API.
+
+I am using Google Sheets as a backend because it's unique, and a lot of people are utilising it to design easy visualized backends for small to medium businesses.
 
 ![alt text](https://github.com/kerridge/snowscoop/blob/master/phonr.png)
 
