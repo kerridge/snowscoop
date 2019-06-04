@@ -9,11 +9,15 @@ I have written a [web scraper in Python 3.7](https://www.github.com/kerridge/pyt
 
 I am using Google Sheets as a backend because it's unique, and a lot of people are utilising it to design easy visualized backends for small to medium businesses.
 
-- This was the initial mockup for the end look
-![alt text](https://github.com/kerridge/snowscoop/blob/master/images/phonr.png) 
-- This is the current state of the UI. The graphed data from the 3rd series and greater is incorrect
-![alt text](https://github.com/kerridge/snowscoop/blob/master/images/current.jpg)
 
+- This was the initial mockup for the end look
+
+
+![alt text](https://github.com/kerridge/snowscoop/blob/master/images/phonr.png) 
+
+
+![alt text](https://github.com/kerridge/snowscoop/blob/master/images/current.jpg)
+- This is the current state of the UI. The graphed data from the 3rd series and greater is incorrect
 ---
 # MVVM Architecture
 **This is the architecture used across the entire application.**
