@@ -2,7 +2,6 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:snowscoop/models/linear-weather.dart';
 import 'package:snowscoop/models/ski-field.dart';
-import 'package:snowscoop/models/all_fields.dart';
 
 class SimpleLineChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -38,7 +37,7 @@ class SimpleLineChart extends StatelessWidget {
     return new charts.LineChart(
       seriesList,
       defaultRenderer:
-        new charts.LineRendererConfig(includeArea: true, stacked: true),
+        new charts.LineRendererConfig(includeArea: false, stacked: false),
       animate: animate);
   }
 
