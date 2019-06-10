@@ -40,17 +40,14 @@ class HomeView extends HomeState {
                     height: _phoneSize.height * 0.90,
                     decoration: new BoxDecoration(
                         // color: Color.fromRGBO(1, 1, 1, 50).withOpacity(0.2)),
-                        color: Colors.black26
-                    ),
+                        color: Colors.black26),
                     child: new Column(
                       children: <Widget>[
                         SizedBox(height: (_phoneSize.height * 0.02)),
                         new Text(
                           'Snow (cm)',
                           style: new TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w600
-                          ),
+                              fontSize: 22, fontWeight: FontWeight.w600),
                         ),
                         SizedBox(height: (_phoneSize.height * 0.02)),
                         graphContainer(),
@@ -101,7 +98,6 @@ class HomeView extends HomeState {
 
     return listView;
   }
-
 
   /// A widget to represent a graph key item.
   /// Takes a `String` label and a `Color` to match graph line
@@ -185,16 +181,18 @@ class HomeView extends HomeState {
             elevation: 5.0,
             color: isSelected ? Colors.blueAccent : Colors.white,
             child: new MaterialButton(
-              child: new Text(
-                title,
-                style: new TextStyle(fontSize: 12),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: new Text(
+                  title,
+                  style: new TextStyle(fontSize: 12),
+                ),
               ),
               onPressed: () {
                 isSelected ? print("disabled") : switchButton(title);
               },
             )));
   }
-
 
   Widget graphContainer() {
     return new Container(
