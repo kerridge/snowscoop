@@ -7,7 +7,7 @@ The goal of this application was to learn more about Flutter and to explore some
 
 I have written a [web scraper in Python 3.7](https://www.github.com/kerridge/pythonsheets) which is responsible for scraping values from a weather website, and then uploading them to Google Sheets using their API.
 
-I am using Google Sheets as a backend because it's unique, and a lot of people are utilising it to design easy visualized backends for small to medium businesses.
+I am using Google Sheets as a backend because it's unique, and a lot of people are utilising it to design easy visualized backends for small to medium businesses. Plus, honestly this applcation has a simple data structure so there is no need for a fancy solution.
 
 
 - This was the initial mockup for the end look
