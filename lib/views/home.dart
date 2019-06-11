@@ -45,7 +45,7 @@ class HomeView extends HomeState {
                       children: <Widget>[
                         SizedBox(height: (_phoneSize.height * 0.02)),
                         new Text(
-                          'Snow (cm)',
+                          graphTitle,
                           style: new TextStyle(
                               fontSize: 22, fontWeight: FontWeight.w600),
                         ),
@@ -186,6 +186,7 @@ class HomeView extends HomeState {
                 child: new Text(
                   title,
                   style: new TextStyle(fontSize: 12),
+                  textAlign: TextAlign.center
                 ),
               ),
               onPressed: () {

@@ -22,6 +22,7 @@ abstract class HomeState extends State<Home> {
   var _db = new SheetsConnection();
 
   var selected = SelectedButton.SNOW;
+  var graphTitle = 'Snowfall (cm)';
 
   Fields skifields =_initFields();
 
@@ -89,19 +90,34 @@ abstract class HomeState extends State<Home> {
   void switchButton(String title) {
     switch (title) {
       case "SNOW":
-        setState(() => selected =SelectedButton.SNOW);
+        setState(() { 
+          selected =SelectedButton.SNOW;
+          graphTitle = 'Snowfall (cm)';
+        });
         break;
       case "RAIN":
-        setState(() => selected =SelectedButton.RAIN);
+        setState(() { 
+          selected =SelectedButton.RAIN;
+          graphTitle = 'Rainfall (mm)';
+        });
         break;
       case "CHILL":
-        setState(() => selected =SelectedButton.CHILL);
+        setState(() { 
+          selected =SelectedButton.CHILL;
+          graphTitle = 'Wind Chill (\u00B0C)';
+        });
         break;
       case "MIN":
-        setState(() => selected =SelectedButton.MIN);
+        setState(() { 
+          selected =SelectedButton.MIN;
+          graphTitle = 'Min Temp (\u00B0C)';
+        });
         break;
       case "MAX":
-        setState(() => selected =SelectedButton.MAX);
+        setState(() { 
+          selected =SelectedButton.MAX;
+          graphTitle = 'Max Temp (\u00B0C)';
+        });
         break;
       default:
         break;
