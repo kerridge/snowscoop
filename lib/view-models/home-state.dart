@@ -18,9 +18,11 @@ class Home extends StatefulWidget {
 abstract class HomeState extends State<Home> {
   @protected
   bool scraping = true;
-  List<Field> otago;
+  List<Field> regionFields;
   var _db = new SheetsConnection();
 
+  // default region is Otago
+  var selectedRegion = 'Otago';
   var selected = SelectedButton.SNOW;
   var graphTitle = 'Snowfall (cm)';
 
@@ -31,10 +33,9 @@ abstract class HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-
-    otago = skifields.getFieldsByRegion('Otago');
-
-    updateRegionWeather(otago);
+    // Otago is the default region when app is opened
+    regionFields = skifields.getFieldsByRegion(selectedRegion);
+    updateRegionWeather(regionFields);
     
     print('done');
   }
