@@ -20,10 +20,36 @@ class HomeView extends HomeState {
   @override
   Widget build(BuildContext context) {
     _phoneSize = MediaQuery.of(context).size;
+    _phoneSize = Size(_phoneSize.width, _phoneSize.height - 50); // to adjust for appbar
 
-    // return new Scaffold(
+    return new Scaffold(appBar: _appbar(), body: _body());
+  }
 
-    // );
+  /// Builds the appbar for the page
+  Widget _appbar() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(50),
+      child: new AppBar(
+        title: new DropdownButton<String>(
+          items: skifields.regions
+              .map((_region) =>
+                  DropdownMenuItem(child: Text(_region), value: _region))
+              .toList(),
+          onChanged: (String _region) {
+            setState(() {
+              selectedRegion = _region;
+              regionFields = skifields.getFieldsByRegion(selectedRegion);
+              updateRegionWeather(regionFields);
+            });
+          },
+          value: selectedRegion,
+        ),
+      ),
+    );
+  }
+
+  /// Builds the body of the page
+  Widget _body() {
     return new Material(
       color: Colors.green,
       child: SafeArea(
@@ -67,9 +93,9 @@ class HomeView extends HomeState {
                             height: _phoneSize.height * 0.3,
                             child: ListView.builder(
                                 scrollDirection: Axis.vertical,
-                                itemCount: otago == null ? 0 : otago.length * 2,
+                                itemCount: regionFields == null ? 0 : regionFields.length * 2,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return _buildEntireKey(otago)[index];
+                                  return _buildEntireKey(regionFields)[index];
                                 })),
                       ],
                     ),
@@ -183,11 +209,9 @@ class HomeView extends HomeState {
             child: new MaterialButton(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
-                child: new Text(
-                  title,
-                  style: new TextStyle(fontSize: 12),
-                  textAlign: TextAlign.center
-                ),
+                child: new Text(title,
+                    style: new TextStyle(fontSize: 12),
+                    textAlign: TextAlign.center),
               ),
               onPressed: () {
                 isSelected ? print("disabled") : switchButton(title);
@@ -209,7 +233,7 @@ class HomeView extends HomeState {
         child: new Center(
           child: new Padding(
               padding: EdgeInsets.all(10),
-              child: SimpleLineChart.withFieldList(otago, selected)),
+              child: SimpleLineChart.withFieldList(regionFields, selected)),
         ),
       ),
     );
