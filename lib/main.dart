@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Signika',
         
       ),
-      routes: routes,
+      onGenerateRoute: generateRoute,
     );
   }
 }

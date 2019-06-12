@@ -137,51 +137,56 @@ class HomeView extends HomeState {
           shadowColor: Colors.grey,
           elevation: 4.0,
           color: Colors.white,
-          child: new Container(
-              padding: EdgeInsets.only(left: _phoneSize.width * 0.025),
-              height: 50,
-              width: _phoneSize.width * 0.875,
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  new Column(
-                    // colored square
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      new Material(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: color,
-                        child: new Container(
-                          height: 30,
-                          width: 30,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(width: (_phoneSize.width * 0.04)),
-                  new Column(
-                      // field name
+          child: GestureDetector(
+                      child: new Container(
+                padding: EdgeInsets.only(left: _phoneSize.width * 0.025),
+                height: 50,
+                width: _phoneSize.width * 0.875,
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    new Column(
+                      // colored square
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Container(
-                          width: _phoneSize.width * 0.60,
-                          child: new Text(
-                            label,
-                            style: new TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
+                        new Material(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: color,
+                          child: new Container(
+                            height: 30,
+                            width: 30,
                           ),
-                        ),
-                      ]),
-                  new Column(
-                    // arrow right
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.keyboard_arrow_right,
-                          size: _phoneSize.height * 0.06),
-                    ],
-                  ),
-                ],
-              )),
+                        )
+                      ],
+                    ),
+                    SizedBox(width: (_phoneSize.width * 0.04)),
+                    new Column(
+                        // field name
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new Container(
+                            width: _phoneSize.width * 0.60,
+                            child: new Text(
+                              label,
+                              style: new TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ]),
+                    new Column(
+                      // arrow right
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.keyboard_arrow_right,
+                            size: _phoneSize.height * 0.06),
+                      ],
+                    ),
+                  ],
+                )),
+                onTap: () {
+                  Navigator.pushNamed(context, '/field-page', arguments: label);
+                },
+          ),
         ),
       ],
     );
