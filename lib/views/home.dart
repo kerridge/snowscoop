@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snowscoop/models/all_fields.dart';
 
 import 'package:snowscoop/view-models/home-state.dart';
 import 'package:snowscoop/views/widgets/line-chart.dart';
@@ -6,6 +7,7 @@ import 'package:snowscoop/views/widgets/line-chart.dart';
 import 'package:snowscoop/models/ski-field.dart';
 // import 'package:snowscoop/models/enums/current-button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
 
 class HomeView extends HomeState {
   Size _phoneSize;
@@ -30,17 +32,15 @@ class HomeView extends HomeState {
     return PreferredSize(
       preferredSize: Size.fromHeight(50),
       child: new AppBar(
-        title: new DropdownButton<String>(
+        title: new DropdownButton<Region>(
           items: skifields.regions
               .map((_region) =>
-                  DropdownMenuItem(child: Text(_region), value: _region))
+                  DropdownMenuItem(child: Text(_region.region), value: _region))
               .toList(),
-          onChanged: (String _region) {
+          onChanged: (Region _region) {
             setState(() {
               selectedRegion = _region;
-              regionFields = skifields.getFieldsByRegion(selectedRegion);
-              scraping =true;
-              updateRegionWeather(regionFields);
+              updateRegionWeather(_region);
             });
           },
           value: selectedRegion,
@@ -94,9 +94,9 @@ class HomeView extends HomeState {
                             height: _phoneSize.height * 0.3,
                             child: ListView.builder(
                                 scrollDirection: Axis.vertical,
-                                itemCount: regionFields == null ? 0 : regionFields.length * 2,
+                                itemCount: selectedRegion.fields == null ? 0 : selectedRegion.fields.length * 2,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return _buildEntireKey(regionFields)[index];
+                                  return _buildEntireKey(selectedRegion.fields)[index];
                                 })),
                       ],
                     ),
@@ -120,7 +120,7 @@ class HomeView extends HomeState {
       // spacing
       listView.add(SizedBox(height: (_phoneSize.height * 0.01)));
       // key object
-      listView.add(_graphKeyItem(field.title, primaryColors[i]));
+      listView.add(_graphKeyItem(field, primaryColors[i]));
     }
 
     return listView;
@@ -128,7 +128,7 @@ class HomeView extends HomeState {
 
   /// A widget to represent a graph key item.
   /// Takes a `String` label and a `Color` to match graph line
-  Widget _graphKeyItem(String label, Color color) {
+  Widget _graphKeyItem(Field field, Color color) {
     return new Row(
       // graph key
       mainAxisAlignment: MainAxisAlignment.center,
@@ -138,51 +138,56 @@ class HomeView extends HomeState {
           shadowColor: Colors.grey,
           elevation: 4.0,
           color: Colors.white,
-          child: new Container(
-              padding: EdgeInsets.only(left: _phoneSize.width * 0.025),
-              height: 50,
-              width: _phoneSize.width * 0.875,
-              child: new Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  new Column(
-                    // colored square
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      new Material(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: color,
-                        child: new Container(
-                          height: 30,
-                          width: 30,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(width: (_phoneSize.width * 0.04)),
-                  new Column(
-                      // field name
+          child: GestureDetector(
+                      child: new Container(
+                padding: EdgeInsets.only(left: _phoneSize.width * 0.025),
+                height: 50,
+                width: _phoneSize.width * 0.875,
+                child: new Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    new Column(
+                      // colored square
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Container(
-                          width: _phoneSize.width * 0.60,
-                          child: new Text(
-                            label,
-                            style: new TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w500),
+                        new Material(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: color,
+                          child: new Container(
+                            height: 30,
+                            width: 30,
                           ),
-                        ),
-                      ]),
-                  new Column(
-                    // arrow right
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(Icons.keyboard_arrow_right,
-                          size: _phoneSize.height * 0.06),
-                    ],
-                  ),
-                ],
-              )),
+                        )
+                      ],
+                    ),
+                    SizedBox(width: (_phoneSize.width * 0.04)),
+                    new Column(
+                        // field name
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          new Container(
+                            width: _phoneSize.width * 0.60,
+                            child: new Text(
+                              field.title,
+                              style: new TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                        ]),
+                    new Column(
+                      // arrow right
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.keyboard_arrow_right,
+                            size: _phoneSize.height * 0.06),
+                      ],
+                    ),
+                  ],
+                )),
+                onTap: () {
+                  Navigator.pushNamed(context, '/field-page', arguments: field);
+                },
+          ),
         ),
       ],
     );
@@ -234,7 +239,7 @@ class HomeView extends HomeState {
         child: new Center(
           child: new Padding(
               padding: EdgeInsets.all(10),
-              child: SimpleLineChart.withFieldList(regionFields, selected)),
+              child: SimpleLineChart.withFieldList(selectedRegion.fields, selected)),
         ),
       ),
     );

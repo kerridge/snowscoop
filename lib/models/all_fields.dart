@@ -1,16 +1,15 @@
 import 'package:snowscoop/models/ski-field.dart';
 
 class Fields {
-  List<String> names = [];
-  List<String> regions = [];
+  // List<String> names = [];
 
+  List<Region> regions = new List<Region>();
   List<Field> allFields = new List<Field>();
 
   /// takes a list of `Field` to store and builds an array of field names
   Fields(this.allFields) {
     for (Field f in allFields) {
-      names.add(f.title);
-      _updateRegion(f.region);
+      addToRegion(f);
     }
   }
 
@@ -22,23 +21,43 @@ class Fields {
     return null;
   }
 
-  /// takes a `region` and adds to `regions` if not already there
-  _updateRegion(String region) {
-    if (!regions.contains(region)) regions.add(region);
+  /// adds `field` to `region`
+  addToRegion(Field field) {
+    for (Region region in regions){
+      if (region.region == field.region){
+        region.fields.add(field);
+        return;
+      } 
+    }
+    Region newRegion = new Region(field, field.region);
+    regions.add(newRegion);
   }
 
-  /// returns a list of `Field` objects matching the region passed
-  List<Field> getFieldsByRegion(String region) {
-    List<Field> list = new List<Field>();
-
-    for (Field field in allFields) {
-      if (field.region == region) list.add(field);
+  /// returns a `region` object matching the region passed
+  Region getRegion(String region) {
+    for (Region r in regions){
+      if (r.region == region) return r;
     }
 
-    return list;
+    return new Region.empty();
   }
 
-  String toString() {
-    return names.toString();
+  // Is this needed????  
+  // String toString() {
+  //   return names.toString();
+  // }
+}
+
+class Region{
+  List<Field> fields = new List<Field>();
+  String region;
+  bool hasData = false;
+
+  //empty constructer
+  Region.empty();
+
+  Region(Field field, this.region){
+    fields.add(field);
   }
+  
 }
