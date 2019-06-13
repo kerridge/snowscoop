@@ -39,6 +39,7 @@ class HomeView extends HomeState {
               .toList(),
           onChanged: (Region _region) {
             setState(() {
+              scraping = true;
               selectedRegion = _region;
               updateRegionWeather(_region);
             });
