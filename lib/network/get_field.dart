@@ -63,8 +63,10 @@ class SheetsConnection {
       '${field.title}!B2:V2',
       '${field.title}!B3:V3',
       '${field.title}!B4:V4',
-      '${field.title}!B5:V5'
+      '${field.title}!B5:V5',
+      '${field.title}!B6:C6'
     ];
+
 
     print('Retreiving values');
     await api.spreadsheets.values
@@ -72,11 +74,12 @@ class SheetsConnection {
       .then((sheets.BatchGetValuesResponse r) {
 
         
-        field.rain = _cleanValues(r.valueRanges[0]);
-        field.snow = _cleanValues(r.valueRanges[1]);
-        field.max =_cleanValues(r.valueRanges[2]);
-        field.min =_cleanValues(r.valueRanges[3]);
-        field.chill =_cleanValues(r.valueRanges[4]);
+        field.rain = _cleanValuesInt(r.valueRanges[0]);
+        field.snow = _cleanValuesInt(r.valueRanges[1]);
+        field.max =_cleanValuesInt(r.valueRanges[2]);
+        field.min =_cleanValuesInt(r.valueRanges[3]);
+        field.chill =_cleanValuesInt(r.valueRanges[4]);
+        field.coords =_cleanValuesDouble(r.valueRanges[5]);
 
         print('Batched GET request completed');
       });
@@ -84,11 +87,24 @@ class SheetsConnection {
     return field;
   }
 
+
+
   /// Takes the response object and transforms to List<int>
-  List<dynamic> _cleanValues(dynamic res) {
+  List<dynamic> _cleanValuesInt(dynamic res) {
     List<dynamic> list = res.values[0]
       .toList()
       .map((val) => int.parse(val))
+      .toList();
+
+    return list;
+  }
+  
+  
+  /// Takes the response object and transforms to List<double>
+  List<dynamic> _cleanValuesDouble(dynamic res) {
+    List<dynamic> list = res.values[0]
+      .toList()
+      .map((val) => double.parse(val))
       .toList();
 
     return list;

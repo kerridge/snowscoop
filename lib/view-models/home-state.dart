@@ -57,7 +57,7 @@ abstract class HomeState extends State<Home> {
       new Field('Cardrona', 'Otago'),
       new Field('Round Hill', 'South Canterbury'),
       new Field('Treble Cone', 'Otago'),
-      new Field('Whara Kea Chalet', 'Otago'),
+      new Field('Remarkables', 'Otago'),
       new Field('Mount Hutt', 'South Canterbury'),
     ];
 

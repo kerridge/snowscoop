@@ -11,6 +11,8 @@ class Field {
   List<dynamic> max;
   List<dynamic> min;
   List<dynamic> chill;
+  
+  List<dynamic> coords;
 
   Map<String, List<dynamic>> getWeatherMapped() {
     if (rain !=null) {
