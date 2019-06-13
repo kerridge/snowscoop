@@ -97,7 +97,7 @@ class HomeView extends HomeState {
                                 scrollDirection: Axis.vertical,
                                 itemCount: selectedRegion.fields == null ? 0 : selectedRegion.fields.length * 2,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return _buildEntireKey(selectedRegion.fields)[index];
+                                  return _buildEntireLegend(selectedRegion.fields)[index];
                                 })),
                       ],
                     ),
@@ -111,9 +111,9 @@ class HomeView extends HomeState {
     );
   }
 
-  /// Builds a list of graph key widgets to fill our list builder.
+  /// Builds a list of graph legend widgets to fill our list builder.
   /// Takes a list of `Field` objects
-  List<Widget> _buildEntireKey(List<Field> fields) {
+  List<Widget> _buildEntireLegend(List<Field> fields) {
     List<Widget> listView = new List();
 
     for (int i = 0; i < fields.length; i++) {
@@ -121,15 +121,15 @@ class HomeView extends HomeState {
       // spacing
       listView.add(SizedBox(height: (_phoneSize.height * 0.01)));
       // key object
-      listView.add(_graphKeyItem(field, primaryColors[i]));
+      listView.add(_graphLegendItem(field, primaryColors[i]));
     }
 
     return listView;
   }
 
-  /// A widget to represent a graph key item.
+  /// A widget to represent a graph legend item.
   /// Takes a `String` label and a `Color` to match graph line
-  Widget _graphKeyItem(Field field, Color color) {
+  Widget _graphLegendItem(Field field, Color color) {
     return new Row(
       // graph key
       mainAxisAlignment: MainAxisAlignment.center,
