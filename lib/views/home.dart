@@ -39,6 +39,7 @@ class HomeView extends HomeState {
             setState(() {
               selectedRegion = _region;
               regionFields = skifields.getFieldsByRegion(selectedRegion);
+              scraping =true;
               updateRegionWeather(regionFields);
             });
           },
