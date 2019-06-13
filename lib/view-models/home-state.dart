@@ -18,11 +18,10 @@ class Home extends StatefulWidget {
 abstract class HomeState extends State<Home> {
   @protected
   bool scraping = true;
-  List<Field> regionFields;
   var _db = new SheetsConnection();
 
   // default region is Otago
-  var selectedRegion = 'Otago';
+  Region selectedRegion;
   var selected = SelectedButton.SNOW;
   var graphTitle = 'Snowfall (cm)';
 
@@ -34,8 +33,8 @@ abstract class HomeState extends State<Home> {
     super.initState();
 
     // Otago is the default region when app is opened
-    regionFields = skifields.getFieldsByRegion(selectedRegion);
-    updateRegionWeather(regionFields);
+    selectedRegion = skifields.getRegion('Otago');
+    updateRegionWeather(selectedRegion);
     
     print('done');
   }
@@ -69,8 +68,8 @@ abstract class HomeState extends State<Home> {
 
   /// takes a `List<Field>` object and updates their weather values
   /// with data from our sheets backend
-  Future updateRegionWeather(List<Field> region) async {
-    
+  Future updateRegionWeather(Region region) async {
+    if (region.hasData) return;
     // make API connection
     await _db.connect()
       .then((dynamic res) { // after connection accepted 
@@ -78,11 +77,12 @@ abstract class HomeState extends State<Home> {
         print('yo');
         
     });
-    for (Field field in region) {
-      field = await _db.getFieldWeather(field);
+    for (Field field in region.fields) {
+     field = await _db.getFieldWeather(field);
     }
-    
     setState(() => scraping = false);
+    
+    region.hasData = true;
   }
 
 

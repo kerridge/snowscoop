@@ -23,7 +23,7 @@ static final CameraPosition mapPosition =CameraPosition(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(widget.field),
+              Text(widget.field.title),
                Center(
                  child: Container(
                   height: 400,
