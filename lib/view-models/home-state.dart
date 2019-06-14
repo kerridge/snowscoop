@@ -69,7 +69,7 @@ abstract class HomeState extends State<Home> {
   /// takes a `List<Field>` object and updates their weather values
   /// with data from our sheets backend
   Future updateRegionWeather(Region region) async {
-    if (region.hasData) return;
+    if (region.hasData) return setState(() => scraping = false);
     // make API connection
     await _db.connect()
       .then((dynamic res) { // after connection accepted 
