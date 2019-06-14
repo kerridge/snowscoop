@@ -25,6 +25,13 @@ class SimpleLineChart extends StatelessWidget {
     );
   }
 
+  factory SimpleLineChart.withField(Field field){
+    return new SimpleLineChart(
+      _buildSeriesFromField(field),
+      animate: true,
+    );
+  }
+
   factory SimpleLineChart.withFieldList(List<Field> fields, var selected) {
     return new SimpleLineChart(
       _buildSeriesFromFieldList(fields, selected),
@@ -65,6 +72,51 @@ class SimpleLineChart extends StatelessWidget {
       var val = field.getWeatherMapped()[weatherKey];
       for (int i = 0; i < weatherLength; i++) {
         data[i] = new LinearWeather(i, val[i]);
+      }
+      
+      // make a copy so series is not referencing array
+      var currentColor = primaryColors[i];
+
+      output.add(
+        new charts.Series<LinearWeather, int>(
+        id: field.title,
+        colorFn: (_, __) => currentColor,
+        // areaColorFn: (_, __) => currentColor.lighter,
+        domainFn: (LinearWeather weather, _) => weather.day,
+        measureFn: (LinearWeather weather, _) => weather.level,
+        data: data
+      ));
+
+      i++;
+    }
+
+    return output;
+  }
+
+
+  static List<charts.Series<LinearWeather, int>> _buildSeriesFromField(Field field) {
+
+
+    var output = new List<charts.Series<LinearWeather, int>>();
+
+    var primaryColors = [
+      charts.MaterialPalette.blue.shadeDefault,
+      charts.MaterialPalette.green.shadeDefault,
+      charts.MaterialPalette.red.shadeDefault,
+    ];
+
+    
+      var val = field.getWeatherMapped();
+
+    int i = 0;
+
+    for (String tempIndex in ["MIN", "CHILL", "MAX"]) {
+      int weatherLength = field.rain == null ? 21 : field.rain.length;
+
+      final data = new List<LinearWeather>(weatherLength);
+      var temp = val[tempIndex];
+      for (int i = 0; i < weatherLength; i++) {
+        data[i] = new LinearWeather(i, temp[i]);
       }
       
       // make a copy so series is not referencing array
