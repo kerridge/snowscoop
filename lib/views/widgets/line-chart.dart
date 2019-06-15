@@ -93,50 +93,49 @@ class SimpleLineChart extends StatelessWidget {
     return output;
   }
 
-
   static List<charts.Series<LinearWeather, int>> _buildSeriesFromField(Field field) {
 
 
-    var output = new List<charts.Series<LinearWeather, int>>();
+    int weatherLength = field.rain == null ? 21 : field.rain.length;
 
-    var primaryColors = [
-      charts.MaterialPalette.blue.shadeDefault,
-      charts.MaterialPalette.green.shadeDefault,
-      charts.MaterialPalette.red.shadeDefault,
-    ];
+    List<LinearWeather> maxData = new List<LinearWeather>(weatherLength);
+    List<LinearWeather> minData = new List<LinearWeather>(weatherLength);
+    List<LinearWeather> chillData = new List<LinearWeather>(weatherLength);
 
-    
-      var val = field.getWeatherMapped();
-
-    int i = 0;
-
-    for (String tempIndex in ["MIN", "CHILL", "MAX"]) {
-      int weatherLength = field.rain == null ? 21 : field.rain.length;
-
-      final data = new List<LinearWeather>(weatherLength);
-      var temp = val[tempIndex];
-      for (int i = 0; i < weatherLength; i++) {
-        data[i] = new LinearWeather(i, temp[i]);
-      }
-      
-      // make a copy so series is not referencing array
-      var currentColor = primaryColors[i];
-
-      output.add(
-        new charts.Series<LinearWeather, int>(
-        id: field.title,
-        colorFn: (_, __) => currentColor,
-        // areaColorFn: (_, __) => currentColor.lighter,
-        domainFn: (LinearWeather weather, _) => weather.day,
-        measureFn: (LinearWeather weather, _) => weather.level,
-        data: data
-      ));
-
-      i++;
+    var mappedData = field.getWeatherMapped();
+    for (int i = 0; i < weatherLength; i++){
+      maxData[i] = LinearWeather(i, mappedData["MAX"][i]);
+      minData[i] = LinearWeather(i, mappedData["MIN"][i]);
+      chillData[i] = LinearWeather(i, mappedData["CHILL"][i]);
     }
 
-    return output;
+    return [
+      new charts.Series<LinearWeather, int>(
+        id: 'min',
+        colorFn: (_, __) => charts.MaterialPalette.cyan.shadeDefault,
+        domainFn: (LinearWeather weather, _) => weather.day,
+        measureFn: (LinearWeather weather, _) => weather.level,
+        data: minData,
+      ),
+      new charts.Series<LinearWeather, int>(
+        id: 'max',
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
+          domainFn: (LinearWeather weather, _) => weather.day,
+          measureFn: (LinearWeather weather, _) => weather.level,
+        data: maxData,
+      ),
+      new charts.Series<LinearWeather, int>(
+        id: 'chill',
+        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
+          domainFn: (LinearWeather weather, _) => weather.day,
+          measureFn: (LinearWeather weather, _) => weather.level,
+        data: chillData,
+      )
+    ];
   }
+
+
+  
 
   /// Build a series of x,y data points
   static List<charts.Series<LinearWeather, int>> _buildSeries(List<int> weather) {
