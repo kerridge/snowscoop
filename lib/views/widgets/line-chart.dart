@@ -56,10 +56,18 @@ class SimpleLineChart extends StatelessWidget {
 
     var primaryColors = [
       charts.MaterialPalette.blue.shadeDefault,
-      charts.MaterialPalette.green.shadeDefault,
       charts.MaterialPalette.red.shadeDefault,
+      charts.MaterialPalette.yellow.shadeDefault,
+      charts.MaterialPalette.green.shadeDefault,
       charts.MaterialPalette.purple.shadeDefault,
-      charts.MaterialPalette.yellow.shadeDefault
+      charts.MaterialPalette.cyan.shadeDefault,
+      charts.MaterialPalette.deepOrange.shadeDefault,
+      charts.MaterialPalette.lime.shadeDefault,
+      charts.MaterialPalette.indigo.shadeDefault,
+      charts.MaterialPalette.pink.shadeDefault,
+      charts.MaterialPalette.teal.shadeDefault,
+      charts.MaterialPalette.gray.shadeDefault,
+      charts.MaterialPalette.black,
     ];
 
     int i = 0;
@@ -87,7 +95,7 @@ class SimpleLineChart extends StatelessWidget {
         data: data
       ));
 
-      i++;
+      i = (i + 1)%13;
     }
 
     return output;

@@ -14,9 +14,18 @@ class HomeView extends HomeState {
 
   List<Color> primaryColors = [
     Colors.blue,
-    Colors.green,
     Colors.red,
+    Colors.yellow,
+    Colors.green,
     Colors.purple,
+    Colors.cyan,
+    Colors.deepOrange,
+    Colors.lime,
+    Colors.indigo,
+    Colors.pink,
+    Colors.teal,
+    Colors.grey,
+    Colors.black,
   ];
 
   @override
@@ -24,7 +33,45 @@ class HomeView extends HomeState {
     _phoneSize = MediaQuery.of(context).size;
     _phoneSize = Size(_phoneSize.width, _phoneSize.height - 50); // to adjust for appbar
 
-    return new Scaffold(appBar: _appbar(), body: _body());
+    return new Scaffold(appBar: _appbar(), body: _body(), drawer: _drawer(),);
+  }
+
+  Widget _drawer(){
+    return new Drawer(
+      child: ListView(
+        children: _fieldTiles(),
+      ),
+    );
+  }
+
+  List<ListTile> _fieldTiles(){
+    List<ListTile> tiles = new List<ListTile>();
+    for (Region region in skifields.regions){
+      tiles.add(
+         ListTile(
+           title: Text(
+             region.region,
+             style: TextStyle(
+               fontSize: 20,
+               fontWeight: FontWeight.bold
+             ),
+             
+             ),
+         )
+      );
+      for (Field field in region.fields){
+        bool selected = false;
+        if (selectedFields.contains(field)) selected = true;
+        tiles.add(
+          ListTile(
+            title: Text('\t${field.title}'),
+            onTap: () {fieldSelected(field);},
+            selected: selected,
+          )
+        );
+      }
+    }
+    return tiles;
   }
 
   /// Builds the appbar for the page
@@ -32,20 +79,10 @@ class HomeView extends HomeState {
     return PreferredSize(
       preferredSize: Size.fromHeight(50),
       child: new AppBar(
-        title: new DropdownButton<Region>(
-          items: skifields.regions
-              .map((_region) =>
-                  DropdownMenuItem(child: Text(_region.region), value: _region))
-              .toList(),
-          onChanged: (Region _region) {
-            setState(() {
-              scraping = true;
-              selectedRegion = _region;
-              updateRegionWeather(_region);
-            });
-          },
-          value: selectedRegion,
-        ),
+        title:Text(
+          'Snow Scoop',
+          
+        )
       ),
     );
   }
@@ -95,9 +132,9 @@ class HomeView extends HomeState {
                             height: _phoneSize.height * 0.3,
                             child: ListView.builder(
                                 scrollDirection: Axis.vertical,
-                                itemCount: selectedRegion.fields == null ? 0 : selectedRegion.fields.length * 2,
+                                itemCount: selectedFields == null ? 0 : selectedFields.length * 2,
                                 itemBuilder: (BuildContext context, int index) {
-                                  return _buildEntireLegend(selectedRegion.fields)[index];
+                                  return _buildEntireLegend(selectedFields)[index];
                                 })),
                       ],
                     ),
@@ -240,7 +277,7 @@ class HomeView extends HomeState {
         child: new Center(
           child: new Padding(
               padding: EdgeInsets.all(10),
-              child: SimpleLineChart.withFieldList(selectedRegion.fields, selected)),
+              child: SimpleLineChart.withFieldList(selectedFields, selected)),
         ),
       ),
     );

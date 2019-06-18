@@ -24,8 +24,11 @@ abstract class HomeState extends State<Home> {
   Region selectedRegion;
   var selected = SelectedButton.SNOW;
   var graphTitle = 'Snowfall (cm)';
+  List<Field> _selectedFields = new List<Field>();
 
   Fields skifields =_initFields();
+
+  List<Field> get selectedFields => _selectedFields;
 
 
   @override
@@ -33,8 +36,8 @@ abstract class HomeState extends State<Home> {
     super.initState();
 
     // Otago is the default region when app is opened
-    selectedRegion = skifields.getRegion('Otago');
-    updateRegionWeather(selectedRegion);
+    Field field =skifields.allFields[0];
+    fieldSelected(field);
     
     print('done');
   }
@@ -68,8 +71,7 @@ abstract class HomeState extends State<Home> {
 
   /// takes a `List<Field>` object and updates their weather values
   /// with data from our sheets backend
-  Future updateRegionWeather(Region region) async {
-    if (region.hasData) return setState(() => scraping = false);
+  Future updateFieldWeather(Field field) async {
     // make API connection
     await _db.connect()
       .then((dynamic res) { // after connection accepted 
@@ -77,13 +79,26 @@ abstract class HomeState extends State<Home> {
         print('yo');
         
     });
-    for (Field field in region.fields) {
      field = await _db.getFieldWeather(field);
-    }
+    
     setState(() => scraping = false);
     
-    region.hasData = true;
+    field.hasData = true;
   }
+
+  
+  @protected
+  void fieldSelected(Field field){
+
+    if (!field.hasData) updateFieldWeather(field);
+    setState(() {
+    if (_selectedFields.contains(field)) {
+      _selectedFields.remove(field);
+      } else _selectedFields.add(field);
+    });
+  }
+
+  
 
 
   /// switches the selected button and displays new data

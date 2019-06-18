@@ -1,8 +1,7 @@
-import 'package:snowscoop/models/enums/regions.dart';
-
 class Field {
   String _title;
   String _region;
+  bool hasData;
 
   List<dynamic> mockData;
 
@@ -38,5 +37,6 @@ class Field {
 
   Field(this._title, this._region) {
     mockData = new List.generate(21, (_) => 0);
+    this.hasData = false;
   }
 }
