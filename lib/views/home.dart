@@ -8,20 +8,21 @@ import 'package:snowscoop/models/ski-field.dart';
 // import 'package:snowscoop/models/enums/current-button.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
-
 class HomeView extends HomeState {
   Size _phoneSize;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   List<Color> primaryColors = [
     Colors.blue,
     Colors.red,
-    Colors.yellow,
     Colors.green,
     Colors.purple,
     Colors.cyan,
     Colors.deepOrange,
     Colors.lime,
     Colors.indigo,
+    Colors.yellow,
     Colors.pink,
     Colors.teal,
     Colors.grey,
@@ -31,12 +32,18 @@ class HomeView extends HomeState {
   @override
   Widget build(BuildContext context) {
     _phoneSize = MediaQuery.of(context).size;
-    _phoneSize = Size(_phoneSize.width, _phoneSize.height - 50); // to adjust for appbar
+    _phoneSize =
+        Size(_phoneSize.width, _phoneSize.height - 50); // to adjust for appbar
 
-    return new Scaffold(appBar: _appbar(), body: _body(), drawer: _drawer(),);
+    return new Scaffold(
+      key: _scaffoldKey,
+      appBar: _appbar(),
+      body: _body(),
+      drawer: _drawer(),
+    );
   }
 
-  Widget _drawer(){
+  Widget _drawer() {
     return new Drawer(
       child: ListView(
         children: _fieldTiles(),
@@ -44,31 +51,29 @@ class HomeView extends HomeState {
     );
   }
 
-  List<ListTile> _fieldTiles(){
+  List<ListTile> _fieldTiles() {
     List<ListTile> tiles = new List<ListTile>();
-    for (Region region in skifields.regions){
-      tiles.add(
-         ListTile(
-           title: Text(
-             region.region,
-             style: TextStyle(
-               fontSize: 20,
-               fontWeight: FontWeight.bold
-             ),
-             
-             ),
-         )
-      );
-      for (Field field in region.fields){
+
+    tiles.add(ListTile(
+      title: Text('Please select the fields to view'),
+    ));
+    for (Region region in skifields.regions) {
+      tiles.add(ListTile(
+        title: Text(
+          region.region,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+      ));
+      for (Field field in region.fields) {
         bool selected = false;
         if (selectedFields.contains(field)) selected = true;
-        tiles.add(
-          ListTile(
-            title: Text('\t${field.title}'),
-            onTap: () {fieldSelected(field);},
-            selected: selected,
-          )
-        );
+        tiles.add(ListTile(
+          title: Text('\t\t${field.title}'),
+          onTap: () {
+            fieldSelected(field);
+          },
+          selected: selected,
+        ));
       }
     }
     return tiles;
@@ -79,11 +84,14 @@ class HomeView extends HomeState {
     return PreferredSize(
       preferredSize: Size.fromHeight(50),
       child: new AppBar(
-        title:Text(
-          'Snow Scoop',
-          
-        )
-      ),
+          leading: new IconButton(
+            iconSize: 30,
+            icon: new Icon(Icons.landscape),
+            onPressed: () => _scaffoldKey.currentState.openDrawer(),
+          ),
+          title: Text(
+            'Snow Scoop',
+          )),
     );
   }
 
@@ -106,37 +114,43 @@ class HomeView extends HomeState {
                     decoration: new BoxDecoration(
                         // color: Color.fromRGBO(1, 1, 1, 50).withOpacity(0.2)),
                         color: Colors.black26),
-                    child: new Column(
-                      children: <Widget>[
-                        SizedBox(height: (_phoneSize.height * 0.02)),
-                        new Text(
-                          graphTitle,
-                          style: new TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(height: (_phoneSize.height * 0.02)),
-                        graphContainer(),
-                        SizedBox(height: (_phoneSize.height * 0.015)),
-                        new Row(
-                          // button row
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            _typeButton("RAIN"),
-                            _typeButton("SNOW"),
-                            _typeButton("CHILL"),
-                            _typeButton("MIN"),
-                            _typeButton("MAX"),
-                          ],
-                        ),
-                        new Container(
-                            height: _phoneSize.height * 0.3,
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: selectedFields == null ? 0 : selectedFields.length * 2,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return _buildEntireLegend(selectedFields)[index];
-                                })),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: new Column(
+                        children: <Widget>[
+                          SizedBox(height: (_phoneSize.height * 0.02)),
+                          new Text(
+                            graphTitle,
+                            style: new TextStyle(
+                                fontSize: 22, fontWeight: FontWeight.w600),
+                          ),
+                          SizedBox(height: (_phoneSize.height * 0.02)),
+                          graphContainer(),
+                          SizedBox(height: (_phoneSize.height * 0.015)),
+                          new Row(
+                            // button row
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              _typeButton("RAIN"),
+                              _typeButton("SNOW"),
+                              _typeButton("CHILL"),
+                              _typeButton("MIN"),
+                              _typeButton("MAX"),
+                            ],
+                          ),
+                          new Container(
+                              height: _phoneSize.height * 0.3,
+                              child: ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  itemCount: selectedFields == null
+                                      ? 0
+                                      : selectedFields.length * 2,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return _buildEntireLegend(
+                                        selectedFields)[index];
+                                  })),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -171,60 +185,62 @@ class HomeView extends HomeState {
       // graph key
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        new Material(
-          borderRadius: BorderRadius.circular(10.0),
-          shadowColor: Colors.grey,
-          elevation: 4.0,
-          color: Colors.white,
-          child: GestureDetector(
-                      child: new Container(
-                padding: EdgeInsets.only(left: _phoneSize.width * 0.025),
-                height: 50,
-                width: _phoneSize.width * 0.875,
-                child: new Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    new Column(
-                      // colored square
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        new Material(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: color,
-                          child: new Container(
-                            height: 30,
-                            width: 30,
-                          ),
-                        )
-                      ],
-                    ),
-                    SizedBox(width: (_phoneSize.width * 0.04)),
-                    new Column(
-                        // field name
+        Expanded(
+                  child: new Material(
+            borderRadius: BorderRadius.circular(10.0),
+            shadowColor: Colors.grey,
+            elevation: 4.0,
+            color: Colors.white,
+            child: GestureDetector(
+              child: new Container(
+                  padding: EdgeInsets.only(left: _phoneSize.width * 0.025),
+                  height: 50,
+                  // width: _phoneSize.width * 0.875,
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      new Column(
+                        // colored square
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          new Container(
-                            width: _phoneSize.width * 0.60,
-                            child: new Text(
-                              field.title,
-                              style: new TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.w500),
+                          new Material(
+                            borderRadius: BorderRadius.circular(10.0),
+                            color: color,
+                            child: new Container(
+                              height: 30,
+                              width: 30,
                             ),
-                          ),
-                        ]),
-                    new Column(
-                      // arrow right
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.keyboard_arrow_right,
-                            size: _phoneSize.height * 0.06),
-                      ],
-                    ),
-                  ],
-                )),
-                onTap: () {
-                  Navigator.pushNamed(context, '/field-page', arguments: field);
-                },
+                          )
+                        ],
+                      ),
+                      SizedBox(width: (_phoneSize.width * 0.04)),
+                      new Column(
+                          // field name
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            new Container(
+                              width: _phoneSize.width * 0.60,
+                              child: new Text(
+                                field.title,
+                                style: new TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ]),
+                      new Column(
+                        // arrow right
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.keyboard_arrow_right,
+                              size: _phoneSize.height * 0.06),
+                        ],
+                      ),
+                    ],
+                  )),
+              onTap: () {
+                Navigator.pushNamed(context, '/field-page', arguments: field);
+              },
+            ),
           ),
         ),
       ],
@@ -239,34 +255,39 @@ class HomeView extends HomeState {
       isSelected = true;
     }
 
-    return new Container(
-        width: _phoneSize.width * 0.17,
-        child: new Material(
-            borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10.0),
-              bottomRight: Radius.circular(10.0),
-              topRight: Radius.circular(10.0),
-            ),
-            shadowColor: Colors.lightBlueAccent.shade100,
-            elevation: 5.0,
-            color: isSelected ? Colors.blueAccent : Colors.white,
-            child: new MaterialButton(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: new Text(title,
-                    style: new TextStyle(fontSize: 12),
-                    textAlign: TextAlign.center),
-              ),
-              onPressed: () {
-                isSelected ? print("disabled") : switchButton(title);
-              },
-            )));
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 3.0),
+        child: new Container(
+            // width: _phoneSize.width * 0.17,
+            child: new Material(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10.0),
+                  bottomRight: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
+                ),
+                shadowColor: Colors.lightBlueAccent.shade100,
+                elevation: 5.0,
+                color: isSelected ? Colors.blueAccent : Colors.white,
+                child: new MaterialButton(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: new Text(title,
+                        style: new TextStyle(fontSize: 12),
+                        textAlign: TextAlign.center),
+                  ),
+                  onPressed: () {
+                    isSelected ? print("disabled") : switchButton(title);
+                  },
+                ))),
+      ),
+    );
   }
 
   Widget graphContainer() {
     return new Container(
       height: (_phoneSize.height * 0.4),
-      width: _phoneSize.width * 0.875,
+      // width: _phoneSize.width * 0.875,
       decoration: new BoxDecoration(
         color: Color.fromRGBO(255, 255, 255, 1),
         borderRadius: BorderRadius.circular(10.0),
