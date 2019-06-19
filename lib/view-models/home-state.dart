@@ -9,6 +9,8 @@ import 'package:snowscoop/models/ski-field.dart';
 import 'package:snowscoop/network/get_field.dart';
 import 'package:snowscoop/models/all_fields.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class Home extends StatefulWidget {
   @override
@@ -19,6 +21,8 @@ abstract class HomeState extends State<Home> {
   @protected
   bool scraping = true;
   var _db = new SheetsConnection();
+
+  SharedPreferences prefs;
 
   // default region is Otago
   Region selectedRegion;
@@ -35,9 +39,15 @@ abstract class HomeState extends State<Home> {
   void initState() {
     super.initState();
 
-    // Otago is the default region when app is opened
-    Field field =skifields.allFields[0];
-    fieldSelected(field);
+    _getSavedFields().then((result){
+      List<Field> initialFields =skifields.getFieldsFromString(result);
+      
+      for (Field field in initialFields){
+      fieldSelected(field);
+
+    }
+    });
+    
     
     print('done');
   }
@@ -49,6 +59,12 @@ abstract class HomeState extends State<Home> {
     super.dispose();
   }
 
+  Future<List<String>> _getSavedFields() async {
+    prefs = await SharedPreferences.getInstance();
+    List<String> fieldsString = prefs.getStringList('selectedFields') ?? ['Treble Cone'];
+    return fieldsString;
+  }
+
   // Field field = new Field('Cardrona', 'Otago');
 
   /// initializes our list of `Field` objects and appends
@@ -56,8 +72,8 @@ abstract class HomeState extends State<Home> {
   static Fields _initFields() {
 
     List<Field> fields = [
-      new Field('Coronet Peak', 'Otago'),
       new Field('Cardrona', 'Otago'),
+      new Field('Coronet Peak', 'Otago'),
       new Field('Round Hill', 'South Canterbury'),
       new Field('Treble Cone', 'Otago'),
       new Field('Remarkables', 'Otago'),
@@ -88,14 +104,20 @@ abstract class HomeState extends State<Home> {
 
   
   @protected
-  void fieldSelected(Field field){
-
+  void fieldSelected(Field field) async {
+    prefs = await SharedPreferences.getInstance();
+    List<String> selectedAsString = new List<String>();
     if (!field.hasData) updateFieldWeather(field);
     setState(() {
     if (_selectedFields.contains(field)) {
       _selectedFields.remove(field);
       } else _selectedFields.add(field);
     });
+    for (Field field in _selectedFields){
+      selectedAsString.add(field.title);
+    }
+    prefs.setStringList('selectedFields', selectedAsString);
+    print(prefs.getStringList('selectedFields'));
   }
 
   

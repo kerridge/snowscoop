@@ -11,7 +11,20 @@ class Fields {
     for (Field f in allFields) {
       addToRegion(f);
     }
+  } 
+
+  List<Field> getFieldsFromString(List<String> names){
+    List<Field> output = new List<Field>();
+    for (String fieldName in names){
+      for (Region region in regions){
+        for (Field field in region.fields){
+          if (field.title == fieldName) output.add(field); 
+        }
+      }
+    }
+    return output;
   }
+
 
   /// returns a `Field` based on field.name + name searched
   Field getFieldByName(String name) {
