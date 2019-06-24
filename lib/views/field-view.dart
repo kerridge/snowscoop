@@ -7,6 +7,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:snowscoop/view-models/field-state.dart';
 import 'package:snowscoop/views/widgets/bar-chart.dart';
 import 'package:snowscoop/views/widgets/line-chart.dart';
+import 'package:snowscoop/views/widgets/time-series-chart.dart';
 
 class FieldView extends FieldState {
   Size _phoneSize;
@@ -151,7 +152,7 @@ class FieldView extends FieldState {
           child: new Center(
             child: new Padding(
               padding: EdgeInsets.all(10),
-              child: tempsSelected ? SimpleLineChart.withField(widget.field) : GroupedBarChart.withField(widget.field),
+              child: tempsSelected ? SimpleLineChart.withField(widget.field) : TimeSeriesChart.withField(widget.field),
             ),
           ),
         ));

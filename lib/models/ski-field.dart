@@ -3,7 +3,7 @@ class Field {
   String _region;
   bool hasData;
 
-  List<dynamic> mockData;
+  List<dynamic> _mockData;
 
   List<dynamic> rain;
   List<dynamic> snow;
@@ -24,11 +24,11 @@ class Field {
       };
     }
     return {
-        'RAIN':mockData,
-        'SNOW':mockData,
-        'MAX':mockData,
-        'MIN':mockData,
-        'CHILL':mockData
+        'RAIN':_mockData,
+        'SNOW':_mockData,
+        'MAX':_mockData,
+        'MIN':_mockData,
+        'CHILL':_mockData
       };
   }
 
@@ -36,7 +36,7 @@ class Field {
   String get region => _region;
 
   Field(this._title, this._region) {
-    mockData = new List.generate(21, (_) => 0);
+    _mockData = new List.generate(21, (_) => 0);
     this.hasData = false;
   }
 }

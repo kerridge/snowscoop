@@ -54,17 +54,12 @@ class Fields {
 
     return new Region.empty();
   }
-
-  // Is this needed????  
-  // String toString() {
-  //   return names.toString();
-  // }
 }
+
 
 class Region{
   List<Field> fields = new List<Field>();
   String region;
-  bool hasData = false;
 
   //empty constructer
   Region.empty();

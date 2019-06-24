@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:snowscoop/views/home.dart';
 
+import 'package:snowscoop/util/build-date-axis.dart';
+
 // enum for current button
 import 'package:snowscoop/models/enums/current-weather.dart';
 import 'package:snowscoop/models/ski-field.dart';
@@ -29,6 +31,7 @@ abstract class HomeState extends State<Home> {
   var selected = SelectedButton.SNOW;
   var graphTitle = 'Snowfall (cm)';
   List<Field> _selectedFields = new List<Field>();
+  // var graphDates = buildDates();
 
   Fields skifields =_initFields();
 
@@ -38,6 +41,7 @@ abstract class HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    // just prints the dates needed for now
 
     _getSavedFields().then((result){
       List<Field> initialFields =skifields.getFieldsFromString(result);
@@ -58,6 +62,7 @@ abstract class HomeState extends State<Home> {
     _db.closeConnection();
     super.dispose();
   }
+
 
   Future<List<String>> _getSavedFields() async {
     prefs = await SharedPreferences.getInstance();
@@ -109,9 +114,9 @@ abstract class HomeState extends State<Home> {
     List<String> selectedAsString = new List<String>();
     if (!field.hasData) updateFieldWeather(field);
     setState(() {
-    if (_selectedFields.contains(field)) {
-      _selectedFields.remove(field);
-      } else _selectedFields.add(field);
+      _selectedFields.contains(field)
+        ? _selectedFields.remove(field)
+        : _selectedFields.add(field);
     });
     for (Field field in _selectedFields){
       selectedAsString.add(field.title);
