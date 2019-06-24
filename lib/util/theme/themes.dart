@@ -38,6 +38,7 @@ class Themes {
   static ThemeData darkTheme = new ThemeData(
       // 
       primaryColor: Colors.black,
+      splashColor: Colors.pink,
       appBarTheme: AppBarTheme(
         color: Colors.black
       ),

@@ -96,6 +96,22 @@ class HomeView extends HomeState {
         ));
       }
     }
+    // tiles.add(ListTile(
+    //   leading: SizedBox(height: 1000),
+    // );
+    tiles.add(
+      ListTile(
+        title: Text(
+          'Settings',
+        ),
+        trailing: Icon(
+          Icons.settings,
+          size: 20,
+          color: Theme.of(context).accentColor
+        ),
+        onTap: () => Navigator.pushNamed(context, '/settings'),
+      )
+    );
     return tiles;
   }
 
