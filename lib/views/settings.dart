@@ -8,10 +8,11 @@ class SettingsView extends SettingsState {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-          padding: new EdgeInsets.all(32.0),
-          child: new Center(
-              child: new Column(children: <Widget>[
+      appBar: _appbar(),
+      body: Container(
+        padding: new EdgeInsets.all(32.0),
+        child: new Center(
+          child: new Column(children: <Widget>[
             new SwitchListTile(
               value: isDarkSetting,
               onChanged: themeSwitcher,
@@ -21,9 +22,16 @@ class SettingsView extends SettingsState {
                 style: Theme.of(context).textTheme.body2,
               ),
             ),
-          ])
+          ]
+        )
         )
       )
+    );
+  }
+
+  Widget _appbar() {
+    return AppBar(
+      title: Text('Settings'),
     );
   }
 }
