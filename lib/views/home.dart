@@ -7,6 +7,7 @@ import 'package:snowscoop/views/widgets/line-chart.dart';
 import 'package:snowscoop/models/ski-field.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:snowscoop/views/widgets/frosted-container.dart';
+import 'package:snowscoop/views/widgets/graph-button.dart';
 import 'package:snowscoop/util/colors.dart' as colors;
 
 class HomeView extends HomeState {
@@ -56,11 +57,21 @@ class HomeView extends HomeState {
         bool selected = false;
         if (selectedFields.contains(field)) selected = true;
         tiles.add(ListTile(
-          title: Text('\t\t${field.title}'),
+          title: Text(
+            '\t\t${field.title}',
+            style: selected ? Theme.of(context).textTheme.body1 : Theme.of(context).textTheme.body2,
+          ),
           onTap: () {
             fieldSelected(field);
           },
           selected: selected,
+          trailing: selected 
+          ? Icon(
+            Icons.check,
+            size: 20,
+            color: Theme.of(context).accentColor,
+          ) 
+          : null,
         ));
       }
     }
@@ -134,11 +145,41 @@ class HomeView extends HomeState {
             // button row
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              _typeButton("RAIN"),
-              _typeButton("SNOW"),
-              _typeButton("CHILL"),
-              _typeButton("MIN"),
-              _typeButton("MAX"),
+              new GraphButton(
+                label: 'RAIN',
+                selected: selected,
+                onPressed: () {
+                  switchButton('RAIN');
+                }
+              ),
+              new GraphButton(
+                label: 'SNOW',
+                selected: selected,
+                onPressed: () {
+                  switchButton('SNOW');
+                }
+              ),
+              new GraphButton(
+                label: 'CHILL',
+                selected: selected,
+                onPressed: () {
+                  switchButton('CHILL');
+                }
+              ),
+              new GraphButton(
+                label: 'MIN',
+                selected: selected,
+                onPressed: () {
+                  switchButton('MIN');
+                }
+              ),
+              new GraphButton(
+                label: 'MAX',
+                selected: selected,
+                onPressed: () {
+                  switchButton('MAX');
+                }
+              ),
             ],
           ),
         ],

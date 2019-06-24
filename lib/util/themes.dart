@@ -9,12 +9,15 @@ ThemeData darkTheme = new ThemeData(
   // main accent
   accentColor: Colors.white,
   disabledColor: Color.fromRGBO(1, 16, 110, 1),
+  
   fontFamily: 'Signika',
 
   textTheme: TextTheme(
     // graph title
     title: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold),
+    body1: TextStyle(fontSize: 20, color: Colors.blue, fontWeight: FontWeight.w400),
+    
     body2: TextStyle(fontSize: 20, color: Colors.white, fontWeight: FontWeight.w400),
-    button: TextStyle(fontSize: 12, color: Colors.white)
+    button: TextStyle(fontSize: 12, color: Colors.white),
   )
 );
