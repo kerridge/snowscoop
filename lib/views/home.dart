@@ -10,6 +10,9 @@ import 'package:snowscoop/views/widgets/frosted-container.dart';
 import 'package:snowscoop/views/widgets/graph-button.dart';
 import 'package:snowscoop/util/colors.dart' as colors;
 
+import 'package:snowscoop/util/theme/theme-wrapper.dart';
+import 'package:snowscoop/util/theme/themes.dart';
+
 class HomeView extends HomeState {
   Size _phoneSize;
   double _bodyWidth;
@@ -117,10 +120,16 @@ class HomeView extends HomeState {
 
 
   Widget _backgroundImage() {
+    String bgImage = '';
+    
+    CustomTheme.instanceOf(context).themeKey == MyThemeKeys.DARK
+      ? bgImage = 'images/bgs/night-lifts.jpg'
+      : bgImage = 'images/bgs/field.jpg';
+
     return new Container(
       decoration: new BoxDecoration(
         image: new DecorationImage(
-          image: new AssetImage('images/bgs/night-lifts.jpg'),
+          image: new AssetImage(bgImage),
           fit: BoxFit.cover,
         ),
       ),

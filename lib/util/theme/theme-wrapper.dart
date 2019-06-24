@@ -47,16 +47,20 @@ class CustomTheme extends StatefulWidget {
 
 class CustomThemeState extends State<CustomTheme> {
   ThemeData _theme;
+  MyThemeKeys _themeKey;
 
   ThemeData get theme => _theme;
+  MyThemeKeys get themeKey => _themeKey;
   
   @override
   void initState() {
     _theme = Themes.getThemeFromKey(widget.initialThemeKey);
+    _themeKey =widget.initialThemeKey;
     super.initState();
   }
 
   void changeTheme(MyThemeKeys themeKey) {
+    _themeKey = themeKey;
     setState(() {
       _theme = Themes.getThemeFromKey(themeKey);
     });
