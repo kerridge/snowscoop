@@ -31,11 +31,32 @@ class HomeView extends HomeState {
     );
   }
 
+
   Widget _drawer() {
     return new Drawer(
       child: ListView(
         children: _fieldTiles(),
       ),
+    );
+  }
+
+
+  /// Builds the appbar for the page
+  Widget _appbar() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(50),
+      child: new AppBar(
+          backgroundColor: Theme.of(context).appBarTheme.color,
+          centerTitle: true,
+
+          leading: new IconButton(
+            iconSize: 30,
+            icon: new Icon(Icons.landscape),
+            onPressed: () => _scaffoldKey.currentState.openDrawer(),
+          ),
+          title: Text(
+            'Snow Scoop',
+          )),
     );
   }
 
@@ -78,22 +99,6 @@ class HomeView extends HomeState {
     return tiles;
   }
 
-  /// Builds the appbar for the page
-  Widget _appbar() {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(50),
-      child: new AppBar(
-          backgroundColor: Colors.black,
-          leading: new IconButton(
-            iconSize: 30,
-            icon: new Icon(Icons.landscape),
-            onPressed: () => _scaffoldKey.currentState.openDrawer(),
-          ),
-          title: Text(
-            'Snow Scoop',
-          )),
-    );
-  }
 
   Widget _backgroundImage() {
     return new Container(
@@ -141,44 +146,34 @@ class HomeView extends HomeState {
           SizedBox(height: (_phoneSize.height * 0.02)),
           graphContainer(),
           SizedBox(height: (_phoneSize.height * 0.015)),
+          // button row
           new Row(
-            // button row
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               new GraphButton(
                 label: 'RAIN',
                 selected: selected,
-                onPressed: () {
-                  switchButton('RAIN');
-                }
+                onPressed: (() =>  switchButton('RAIN'))
               ),
               new GraphButton(
                 label: 'SNOW',
                 selected: selected,
-                onPressed: () {
-                  switchButton('SNOW');
-                }
+                onPressed: (() => switchButton('SNOW'))
               ),
               new GraphButton(
                 label: 'CHILL',
                 selected: selected,
-                onPressed: () {
-                  switchButton('CHILL');
-                }
+                onPressed: (() => switchButton('CHILL'))
               ),
               new GraphButton(
                 label: 'MIN',
                 selected: selected,
-                onPressed: () {
-                  switchButton('MIN');
-                }
+                onPressed: (() => switchButton('MIN'))
               ),
               new GraphButton(
                 label: 'MAX',
                 selected: selected,
-                onPressed: () {
-                  switchButton('MAX');
-                }
+                onPressed: (() => switchButton('MAX'))
               ),
             ],
           ),
@@ -199,7 +194,7 @@ class HomeView extends HomeState {
     }
 
     return new Container(
-        height: _phoneSize.height * 0.35,
+        height: _phoneSize.height * 0.38,
         width: _bodyWidth,
         child: ListView.builder(
             scrollDirection: Axis.vertical,
@@ -265,42 +260,6 @@ class HomeView extends HomeState {
     );
   }
 
-  /// A button widget for switching weather type
-  Widget _typeButton(String title) {
-    bool isSelected = false;
-
-    if (selected.toString() == "SelectedButton." + title) {
-      isSelected = true;
-    }
-
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 3.0),
-        child: new Container(
-            // width: _phoneSize.width * 0.17,
-            child: new Material(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10.0),
-                  bottomRight: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
-                ),
-                // shadowColor: Colors.grey,
-                // elevation: 4.0,
-                color: isSelected ? Theme.of(context).disabledColor : Theme.of(context).buttonColor,
-                child: new MaterialButton(
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: new Text(title,
-                        style: Theme.of(context).textTheme.button,
-                        textAlign: TextAlign.center),
-                  ),
-                  onPressed: () {
-                    isSelected ? print("disabled") : switchButton(title);
-                  },
-                ))),
-      ),
-    );
-  }
 
   Widget graphContainer() {
     return new Container(

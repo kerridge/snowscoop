@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:snowscoop/util/routes.dart';
-import 'package:snowscoop/util/themes.dart';
+import 'package:snowscoop/util/theme/theme-wrapper.dart';
+import 'package:snowscoop/util/theme/themes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+  MyThemeKeys _theme = (_prefs.getBool("isDark") ?? true)
+    ? MyThemeKeys.DARK 
+    : MyThemeKeys.LIGHT;
+
+  runApp(
+    CustomTheme(
+      initialThemeKey: _theme,
+      child: MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -13,10 +28,10 @@ class MyApp extends StatelessWidget {
       DeviceOrientation.portraitDown,
     ]);
 
-    return new MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Snow Scoop',
-      theme: darkTheme,
+      theme: CustomTheme.of(context),
       onGenerateRoute: generateRoute,
     );
   }
