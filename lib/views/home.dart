@@ -49,7 +49,7 @@ class HomeView extends HomeState {
       tiles.add(ListTile(
         title: Text(
           region.region,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.title,
         ),
       ));
       for (Field field in region.fields) {
@@ -88,7 +88,7 @@ class HomeView extends HomeState {
     return new Container(
       decoration: new BoxDecoration(
         image: new DecorationImage(
-          image: new AssetImage('images/bgs/field.jpg'),
+          image: new AssetImage('images/bgs/night-lifts.jpg'),
           fit: BoxFit.cover,
         ),
       ),
@@ -125,7 +125,7 @@ class HomeView extends HomeState {
           // SizedBox(height: (_phoneSize.height * 0.02)),
           new Text(
             graphTitle,
-            style: new TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+            style: Theme.of(context).textTheme.title,
           ),
           SizedBox(height: (_phoneSize.height * 0.02)),
           graphContainer(),
@@ -201,10 +201,7 @@ class HomeView extends HomeState {
                     width: _phoneSize.width * 0.6,
                     child: new Text(
                       field.title,
-                      style: new TextStyle(
-                          fontSize: 20,
-                          // color: ,
-                          fontWeight: FontWeight.w500),
+                      style: Theme.of(context).textTheme.body2
                     ),
                   ),
                 ]),
@@ -213,7 +210,9 @@ class HomeView extends HomeState {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Icon(Icons.keyboard_arrow_right,
-                    size: _phoneSize.height * 0.04),
+                    size: _phoneSize.height * 0.04,
+                    color: Theme.of(context).accentColor
+                ),
               ],
             ),
           ],
@@ -244,14 +243,14 @@ class HomeView extends HomeState {
                   bottomRight: Radius.circular(10.0),
                   topRight: Radius.circular(10.0),
                 ),
-                shadowColor: Colors.lightBlueAccent.shade100,
-                elevation: 5.0,
-                color: isSelected ? Colors.blueAccent : Colors.white,
+                // shadowColor: Colors.grey,
+                // elevation: 4.0,
+                color: isSelected ? Theme.of(context).disabledColor : Theme.of(context).buttonColor,
                 child: new MaterialButton(
                   child: FittedBox(
                     fit: BoxFit.scaleDown,
                     child: new Text(title,
-                        style: new TextStyle(fontSize: 12),
+                        style: Theme.of(context).textTheme.button,
                         textAlign: TextAlign.center),
                   ),
                   onPressed: () {
@@ -267,7 +266,7 @@ class HomeView extends HomeState {
       height: (_phoneSize.height * 0.36),
       // width: _phoneSize.width * 0.875,
       decoration: new BoxDecoration(
-        color: Color.fromRGBO(255, 255, 255, 0.75),
+        color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: new ModalProgressHUD(

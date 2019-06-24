@@ -4,7 +4,6 @@ import 'dart:ui' as ui;
 class FrostedContainer extends StatelessWidget {
   FrostedContainer({
     this.child,
-
     this.width,
   })  : assert(width != null && width >= 0.0);
 
@@ -25,7 +24,7 @@ class FrostedContainer extends StatelessWidget {
               borderRadius: new BorderRadius.circular(10.0),
               shape: BoxShape.rectangle,
               //you can change opacity with color here
-              color: Colors.white.withOpacity(0.5),
+              color: Theme.of(context).primaryColor.withOpacity(0.5),
               boxShadow: <BoxShadow>[
                 new BoxShadow(
                   color: Colors.black26,
