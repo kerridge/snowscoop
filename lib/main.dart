@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() async {
   SharedPreferences _prefs = await SharedPreferences.getInstance();
 
+  // check the theme before initializing app
   MyThemeKeys _theme = (_prefs.getBool("isDark") ?? true)
     ? MyThemeKeys.DARK 
     : MyThemeKeys.LIGHT;

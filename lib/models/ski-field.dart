@@ -13,6 +13,7 @@ class Field {
   
   List<dynamic> coords;
 
+  /// returns the real weather values or a list of 0's
   Map<String, List<dynamic>> getWeatherMapped() {
     if (rain !=null) {
       return {

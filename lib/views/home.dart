@@ -8,8 +8,8 @@ import 'package:snowscoop/models/ski-field.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:snowscoop/views/widgets/frosted-container.dart';
 import 'package:snowscoop/views/widgets/graph-button.dart';
-import 'package:snowscoop/util/colors.dart' as colors;
 
+import 'package:snowscoop/util/colors.dart' as colors;
 import 'package:snowscoop/util/theme/theme-wrapper.dart';
 import 'package:snowscoop/util/theme/themes.dart';
 
@@ -121,7 +121,8 @@ class HomeView extends HomeState {
 
   Widget _backgroundImage() {
     String bgImage = '';
-    
+
+    // a check to see if we are currently in dark mode
     CustomTheme.instanceOf(context).themeKey == MyThemeKeys.DARK
       ? bgImage = 'images/bgs/night-lifts.jpg'
       : bgImage = 'images/bgs/field.jpg';

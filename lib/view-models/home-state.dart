@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-
-import 'package:snowscoop/views/home.dart';
-
-import 'package:snowscoop/util/build-date-axis.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // enum for current button
 import 'package:snowscoop/models/enums/current-weather.dart';
 import 'package:snowscoop/models/ski-field.dart';
-
-import 'package:snowscoop/network/get_field.dart';
 import 'package:snowscoop/models/all_fields.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:snowscoop/views/home.dart';
+import 'package:snowscoop/network/get_field.dart';
 
 
 class Home extends StatefulWidget {
@@ -19,12 +15,13 @@ class Home extends StatefulWidget {
   HomeView createState() => new HomeView();
 }
 
+
 abstract class HomeState extends State<Home> {
   @protected
   bool scraping = true;
   var _db = new SheetsConnection();
 
-  SharedPreferences prefs;
+  SharedPreferences _prefs;
 
   // default region is Otago
   Region selectedRegion;
@@ -65,8 +62,8 @@ abstract class HomeState extends State<Home> {
 
 
   Future<List<String>> _getSavedFields() async {
-    prefs = await SharedPreferences.getInstance();
-    List<String> fieldsString = prefs.getStringList('selectedFields') ?? ['Treble Cone'];
+    _prefs = await SharedPreferences.getInstance();
+    List<String> fieldsString = _prefs.getStringList('selectedFields') ?? ['Treble Cone'];
     return fieldsString;
   }
 
@@ -86,8 +83,6 @@ abstract class HomeState extends State<Home> {
     ];
 
     return new Fields(fields);
-
-    // List<Field> otago = allFields.getFieldsByRegion('Otago');
   }
 
   /// takes a `List<Field>` object and updates their weather values
@@ -110,7 +105,7 @@ abstract class HomeState extends State<Home> {
   
   @protected
   void fieldSelected(Field field) async {
-    prefs = await SharedPreferences.getInstance();
+    _prefs = await SharedPreferences.getInstance();
     List<String> selectedAsString = new List<String>();
     if (!field.hasData) updateFieldWeather(field);
     setState(() {
@@ -121,8 +116,8 @@ abstract class HomeState extends State<Home> {
     for (Field field in _selectedFields){
       selectedAsString.add(field.title);
     }
-    prefs.setStringList('selectedFields', selectedAsString);
-    print(prefs.getStringList('selectedFields'));
+    _prefs.setStringList('selectedFields', selectedAsString);
+    print(_prefs.getStringList('selectedFields'));
   }
 
   
