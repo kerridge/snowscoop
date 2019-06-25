@@ -5,18 +5,22 @@ class GraphButton extends StatelessWidget {
   GraphButton({
     this.label,
     this.selected,
-    this.onPressed
+    this.onPressed,
+    this.altLabel = '', // give it a default to make it optional
   });
 
   final String label;
   final SelectedButton selected;
   final VoidCallback onPressed;
+  // for buttons that aren't titled the same as enum
+  final String altLabel;
 
   @override
   Widget build(BuildContext context) {
     bool isSelected = false;
 
-    if (selected.toString() == "SelectedButton." + label) {
+    if (selected.toString() == "SelectedButton." + label
+    ||  selected.toString() == "SelectedButton." + altLabel) {
       isSelected = true;
     }
 

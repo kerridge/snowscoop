@@ -3,5 +3,9 @@ enum SelectedButton {
   SNOW,
   CHILL,
   MIN,
-  MAX
+  MAX,
+  SNOWRAIN,
+  TEMPERATURES,
 }
+
+// refactor this man
