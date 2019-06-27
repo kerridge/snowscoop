@@ -8,6 +8,7 @@ import 'package:snowscoop/view-models/field-state.dart';
 // import 'package:snowscoop/views/widgets/bar-chart.dart';
 import 'package:snowscoop/views/widgets/line-chart.dart';
 import 'package:snowscoop/views/widgets/time-series-chart.dart';
+import 'package:snowscoop/views/widgets/graph-legend.dart';
 
 import 'package:snowscoop/util/colors.dart' as colors;
 import 'package:snowscoop/util/theme/theme-wrapper.dart';
@@ -70,11 +71,50 @@ class FieldView extends FieldState {
                 children: <Widget>[
                   new FrostedContainer(
                       width: _bodyWidth, child: _graphWithButtons()),
-                  SizedBox(height: (_phoneSize.height * 0.02)),
-                  new FrostedContainer(
+                  SizedBox(height: (_phoneSize.height * 0.01)),
+
+                  new GraphLegendItem(
+                    label: 'Minimum Temp',
                     width: _bodyWidth,
-                    child: map(),
-                  )
+                    color: Colors.cyan,
+                    trailing: 
+                      Icon(Icons.keyboard_arrow_right,
+                        size: _phoneSize.height * 0.04,
+                        color: Theme.of(context).accentColor
+                      ),
+                    onTap: () {print('hey x');},
+                  ),
+                  SizedBox(height: (_phoneSize.height * 0.01)),
+                  new GraphLegendItem(
+                    label: 'Wind Chill',
+                    width: _bodyWidth,
+                    color: Colors.yellow,
+                    trailing: 
+                      Icon(Icons.keyboard_arrow_right,
+                        size: _phoneSize.height * 0.04,
+                        color: Theme.of(context).accentColor
+                      ),
+                    onTap: () {print('hey x');},
+                  ),
+                  SizedBox(height: (_phoneSize.height * 0.01)),
+                  new GraphLegendItem(
+                    label: 'Maximum Temp',
+                    width: _bodyWidth,
+                    color: Colors.red,
+                    trailing: 
+                      Icon(Icons.keyboard_arrow_right,
+                        size: _phoneSize.height * 0.04,
+                        color: Theme.of(context).accentColor
+                      ),
+                    onTap: () {print('hey x');},
+                  ),
+
+                  SizedBox(height: (_phoneSize.height * 0.02)),
+
+                  // new FrostedContainer(
+                  //   width: _bodyWidth,
+                  //   child: map(),
+                  // ),
                 ],
               ))
             ]));
@@ -117,7 +157,7 @@ class FieldView extends FieldState {
       new Text('Field Location'),
       SizedBox(height: (_phoneSize.height * 0.02)),
           Container(
-              height: 400,
+              height: 200,
               child: GoogleMap(
                 markers: <Marker>{
                   Marker(

@@ -25,8 +25,6 @@ abstract class FieldState extends State<FieldPage> {
   Widget currentGraph;
 
 
-  
-
   @override
   void initState(){
     super.initState();

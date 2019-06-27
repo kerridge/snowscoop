@@ -8,6 +8,7 @@ import 'package:snowscoop/models/ski-field.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:snowscoop/views/widgets/frosted-container.dart';
 import 'package:snowscoop/views/widgets/graph-button.dart';
+import 'package:snowscoop/views/widgets/graph-legend.dart';
 
 import 'package:snowscoop/util/colors.dart' as colors;
 import 'package:snowscoop/util/theme/theme-wrapper.dart';
@@ -34,15 +35,18 @@ class HomeView extends HomeState {
     );
   }
 
-
   Widget _drawer() {
     return new Drawer(
-      child: ListView(
-        children: _fieldTiles(),
+      child: Column(
+        children: <Widget>[
+          ListView(
+            children: _fieldTiles(),
+          ),
+
+        ]
       ),
     );
   }
-
 
   /// Builds the appbar for the page
   Widget _appbar() {
@@ -51,7 +55,6 @@ class HomeView extends HomeState {
       child: new AppBar(
           backgroundColor: Theme.of(context).appBarTheme.color,
           centerTitle: true,
-
           leading: new IconButton(
             iconSize: 30,
             icon: new Icon(Icons.landscape),
@@ -83,49 +86,34 @@ class HomeView extends HomeState {
         tiles.add(ListTile(
           title: Text(
             '\t\t${field.title}',
-            style: selected ? Theme.of(context).textTheme.body1 : Theme.of(context).textTheme.body2,
+            style: selected
+                ? Theme.of(context).textTheme.body1
+                : Theme.of(context).textTheme.body2,
           ),
           onTap: () {
             fieldSelected(field);
           },
           selected: selected,
-          trailing: selected 
-          ? Icon(
-            Icons.check,
-            size: 20,
-            color: Theme.of(context).accentColor,
-          ) 
-          : null,
+          trailing: selected
+              ? Icon(
+                  Icons.check,
+                  size: 20,
+                  color: Theme.of(context).accentColor,
+                )
+              : null,
         ));
       }
     }
-    // tiles.add(ListTile(
-    //   leading: SizedBox(height: 1000),
-    // );
-    tiles.add(
-      ListTile(
-        title: Text(
-          'Settings',
-        ),
-        trailing: Icon(
-          Icons.settings,
-          size: 20,
-          color: Theme.of(context).accentColor
-        ),
-        onTap: () => Navigator.pushNamed(context, '/settings'),
-      )
-    );
     return tiles;
   }
-
 
   Widget _backgroundImage() {
     String bgImage = '';
 
     // a check to see if we are currently in dark mode
     CustomTheme.instanceOf(context).themeKey == MyThemeKeys.DARK
-      ? bgImage = 'images/bgs/night-lifts.jpg'
-      : bgImage = 'images/bgs/field.jpg';
+        ? bgImage = 'images/bgs/night-lifts.jpg'
+        : bgImage = 'images/bgs/field.jpg';
 
     return new Container(
       decoration: new BoxDecoration(
@@ -139,24 +127,20 @@ class HomeView extends HomeState {
 
   Widget _body() {
     return new LayoutBuilder(
-      builder: (context, constraints) =>
-        Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            _backgroundImage(),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+        builder: (context, constraints) => Stack(
+              fit: StackFit.expand,
               children: <Widget>[
-                FrostedContainer(
-                  width: _bodyWidth,
-                  child: _graphWithButtons()
-                ),
-                _legendList(selectedFields),
+                _backgroundImage(),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    FrostedContainer(
+                        width: _bodyWidth, child: _graphWithButtons()),
+                    _legendList(selectedFields),
+                  ],
+                )
               ],
-            )
-          ],
-        )
-     );
+            ));
   }
 
   Widget _graphWithButtons() {
@@ -170,37 +154,32 @@ class HomeView extends HomeState {
             style: Theme.of(context).textTheme.title,
           ),
           SizedBox(height: (_phoneSize.height * 0.02)),
-          graphContainer(),
+          _graphContainer(),
           SizedBox(height: (_phoneSize.height * 0.015)),
           // button row
           new Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               new GraphButton(
-                label: 'RAIN',
-                selected: selected,
-                onPressed: (() =>  switchButton('RAIN'))
-              ),
+                  label: 'RAIN',
+                  selected: selected,
+                  onPressed: (() => switchButton('RAIN'))),
               new GraphButton(
-                label: 'SNOW',
-                selected: selected,
-                onPressed: (() => switchButton('SNOW'))
-              ),
+                  label: 'SNOW',
+                  selected: selected,
+                  onPressed: (() => switchButton('SNOW'))),
               new GraphButton(
-                label: 'CHILL',
-                selected: selected,
-                onPressed: (() => switchButton('CHILL'))
-              ),
+                  label: 'CHILL',
+                  selected: selected,
+                  onPressed: (() => switchButton('CHILL'))),
               new GraphButton(
-                label: 'MIN',
-                selected: selected,
-                onPressed: (() => switchButton('MIN'))
-              ),
+                  label: 'MIN',
+                  selected: selected,
+                  onPressed: (() => switchButton('MIN'))),
               new GraphButton(
-                label: 'MAX',
-                selected: selected,
-                onPressed: (() => switchButton('MAX'))
-              ),
+                  label: 'MAX',
+                  selected: selected,
+                  onPressed: (() => switchButton('MAX'))),
             ],
           ),
         ],
@@ -215,8 +194,19 @@ class HomeView extends HomeState {
       Field field = fields[i];
       // spacing
       legendItems.add(SizedBox(height: (_phoneSize.height * 0.01)));
+
       // legend object
-      legendItems.add(_graphLegendItem(field, colors.graphColors[i]));
+      legendItems.add(GraphLegendItem(
+        label: field.title,
+        color: colors.graphColors[i],
+        width: _bodyWidth,
+        trailing: Icon(Icons.keyboard_arrow_right,
+            size: _phoneSize.height * 0.04,
+            color: Theme.of(context).accentColor),
+        onTap: () {
+          Navigator.pushNamed(context, '/field-page', arguments: field);
+        },
+      ));
     }
 
     return new Container(
@@ -230,67 +220,9 @@ class HomeView extends HomeState {
             }));
   }
 
-  /// A widget to represent a graph legend item.
-  /// Takes a `String` label and a `Color` to match graph line
-  Widget _graphLegendItem(Field field, Color color) {
-    return FrostedContainer(
-      width: _bodyWidth,
-      child: GestureDetector(
-        child: new Container(
-            child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            new Column(
-              // colored square
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                new Material(
-                  borderRadius: BorderRadius.circular(8.0),
-                  color: color,
-                  child: new Container(
-                    height: _phoneSize.width * 0.07,
-                    width: _phoneSize.width * 0.07,
-                  ),
-                )
-              ],
-            ),
-            SizedBox(width: (_phoneSize.width * 0.01)),
-            new Column(
-                // field name
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  new Container(
-                    width: _phoneSize.width * 0.6,
-                    child: new Text(
-                      field.title,
-                      style: Theme.of(context).textTheme.body2
-                    ),
-                  ),
-                ]),
-            new Column(
-              // arrow icon
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(Icons.keyboard_arrow_right,
-                    size: _phoneSize.height * 0.04,
-                    color: Theme.of(context).accentColor
-                ),
-              ],
-            ),
-          ],
-        )),
-        onTap: () {
-          Navigator.pushNamed(context, '/field-page', arguments: field);
-        },
-      ),
-    );
-  }
-
-
-  Widget graphContainer() {
+  Widget _graphContainer() {
     return new Container(
       height: (_phoneSize.height * 0.36),
-      // width: _phoneSize.width * 0.875,
       decoration: new BoxDecoration(
         color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.circular(10.0),
