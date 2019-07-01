@@ -38,7 +38,11 @@ class FieldView extends FieldState {
 
   Widget _appbar() {
     return AppBar(
-      title: Text(widget.field.title),
+      title: Text(
+        widget.field.title,
+        style: Theme.of(context).textTheme.title,
+      ),
+      centerTitle: true,
     );
   }
 
@@ -69,6 +73,7 @@ class FieldView extends FieldState {
                   child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(height: _phoneSize.height * 0.02),
                   new FrostedContainer(
                       width: _bodyWidth, child: _graphWithButtons()),
                   SizedBox(height: (_phoneSize.height * 0.01)),
@@ -78,19 +83,7 @@ class FieldView extends FieldState {
                     width: _bodyWidth,
                     color: Colors.cyan,
                     trailing: 
-                      Icon(Icons.keyboard_arrow_right,
-                        size: _phoneSize.height * 0.04,
-                        color: Theme.of(context).accentColor
-                      ),
-                    onTap: () {print('hey x');},
-                  ),
-                  SizedBox(height: (_phoneSize.height * 0.01)),
-                  new GraphLegendItem(
-                    label: 'Wind Chill',
-                    width: _bodyWidth,
-                    color: Colors.yellow,
-                    trailing: 
-                      Icon(Icons.keyboard_arrow_right,
+                      Icon(Icons.trending_down,
                         size: _phoneSize.height * 0.04,
                         color: Theme.of(context).accentColor
                       ),
@@ -102,7 +95,19 @@ class FieldView extends FieldState {
                     width: _bodyWidth,
                     color: Colors.red,
                     trailing: 
-                      Icon(Icons.keyboard_arrow_right,
+                      Icon(Icons.trending_up,
+                        size: _phoneSize.height * 0.04,
+                        color: Theme.of(context).accentColor
+                      ),
+                    onTap: () {print('hey x');},
+                  ),
+                  SizedBox(height: (_phoneSize.height * 0.01)),
+                  new GraphLegendItem(
+                    label: 'Wind Chill Factor',
+                    width: _bodyWidth,
+                    color: Colors.yellow,
+                    trailing: 
+                      Icon(Icons.ac_unit,
                         size: _phoneSize.height * 0.04,
                         color: Theme.of(context).accentColor
                       ),
@@ -111,10 +116,10 @@ class FieldView extends FieldState {
 
                   SizedBox(height: (_phoneSize.height * 0.02)),
 
-                  // new FrostedContainer(
-                  //   width: _bodyWidth,
-                  //   child: map(),
-                  // ),
+                  new FrostedContainer(
+                    width: _bodyWidth,
+                    child: map(),
+                  ),
                 ],
               ))
             ]));
@@ -154,7 +159,10 @@ class FieldView extends FieldState {
 
   Widget map() {
     return new Column(children: <Widget>[
-      new Text('Field Location'),
+      new Text(
+        'Field Location',
+        style: Theme.of(context).textTheme.title,
+        ),
       SizedBox(height: (_phoneSize.height * 0.02)),
           Container(
               height: 200,
@@ -176,10 +184,10 @@ class FieldView extends FieldState {
 
   Widget graphContainer() {
     return new Container(
-        height: (_phoneSize.height * 0.4),
-        width: _phoneSize.width * 0.875,
+        // height: (_phoneSize.height * 0.4),
+        // width: _phoneSize.width * 0.875,
         decoration: new BoxDecoration(
-          color: Color.fromRGBO(255, 255, 255, 1),
+          color: Theme.of(context).canvasColor,
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: new ModalProgressHUD(

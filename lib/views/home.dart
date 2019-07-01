@@ -36,16 +36,37 @@ class HomeView extends HomeState {
   }
 
   Widget _drawer() {
-    return new Drawer(
-      child: Column(
-        children: <Widget>[
-          ListView(
-            children: _fieldTiles(),
-          ),
+    double _settingsHeight = 70;
 
-        ]
-      ),
-    );
+    return new 
+      LayoutBuilder(
+      builder: (context, constraints) =>
+      Drawer(
+      child: new Stack(
+        children: <Widget>[
+        Column(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              for (Widget tile in _fieldTiles()) tile,
+              SizedBox(height: 20,),
+            ]),
+            Positioned(
+              width: _phoneSize.width * 0.73,
+              top: constraints.maxHeight - _settingsHeight,
+              left: constraints.minWidth,
+              child: ListTile(
+                title: Text(
+                  '\t\tSettings',
+                  style: Theme.of(context).textTheme.title,
+                  // textAlign: TextAlign.center,
+                ),
+                trailing: Icon(Icons.settings,
+                    size: 30, color: Theme.of(context).accentColor),
+                onTap: () => Navigator.pushNamed(context, '/settings'),
+              ),
+            )
+      ]),
+    ));
   }
 
   /// Builds the appbar for the page
@@ -57,22 +78,21 @@ class HomeView extends HomeState {
           centerTitle: true,
           leading: new IconButton(
             iconSize: 30,
-            icon: new Icon(Icons.landscape),
+            icon: new Icon(Icons.menu),
             onPressed: () => _scaffoldKey.currentState.openDrawer(),
           ),
           title: Text(
             'Snow Scoop',
+            style: Theme.of(context).textTheme.title,
           )),
     );
   }
 
   // move to its own file
-  List<ListTile> _fieldTiles() {
-    List<ListTile> tiles = new List<ListTile>();
+  List<Widget> _fieldTiles() {
+    List<Widget> tiles = new List<Widget>();
 
-    tiles.add(ListTile(
-      title: Text('Please select the fields to view'),
-    ));
+    tiles.add(new SizedBox(height: 40,));
     for (Region region in skifields.regions) {
       tiles.add(ListTile(
         title: Text(
@@ -135,8 +155,8 @@ class HomeView extends HomeState {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     FrostedContainer(
-                        width: _bodyWidth, child: _graphWithButtons()),
-                    _legendList(selectedFields),
+                      width: _bodyWidth, child: _graphWithButtons()),
+                      _legendList(selectedFields),
                   ],
                 )
               ],
@@ -222,7 +242,7 @@ class HomeView extends HomeState {
 
   Widget _graphContainer() {
     return new Container(
-      height: (_phoneSize.height * 0.36),
+      height: (_phoneSize.height * 0.37),
       decoration: new BoxDecoration(
         color: Theme.of(context).canvasColor,
         borderRadius: BorderRadius.circular(10.0),
@@ -233,7 +253,7 @@ class HomeView extends HomeState {
         child: new Center(
           child: new Padding(
               padding: EdgeInsets.all(10),
-              child: SimpleLineChart.withFieldList(selectedFields, selected)),
+              child: SimpleLineChart.withFieldList(selectedFields, selected, fillArea)),
         ),
       ),
     );

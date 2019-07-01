@@ -34,6 +34,8 @@ abstract class HomeState extends State<Home> {
 
   List<Field> get selectedFields => _selectedFields;
 
+  bool fillArea = true;
+
 
   @override
   void initState() {
@@ -130,29 +132,34 @@ abstract class HomeState extends State<Home> {
       case "SNOW":
         setState(() { 
           selected =SelectedButton.SNOW;
+          fillArea =true;
           graphTitle = 'Snowfall (cm)';
         });
         break;
       case "RAIN":
         setState(() { 
+          fillArea =true;
           selected =SelectedButton.RAIN;
           graphTitle = 'Rainfall (mm)';
         });
         break;
       case "CHILL":
         setState(() { 
+          fillArea =false;
           selected =SelectedButton.CHILL;
           graphTitle = 'Wind Chill (\u00B0C)';
         });
         break;
       case "MIN":
         setState(() { 
+          fillArea =false;
           selected =SelectedButton.MIN;
           graphTitle = 'Min Temp (\u00B0C)';
         });
         break;
       case "MAX":
         setState(() { 
+          fillArea =false;
           selected =SelectedButton.MAX;
           graphTitle = 'Max Temp (\u00B0C)';
         });
