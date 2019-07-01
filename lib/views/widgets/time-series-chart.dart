@@ -3,6 +3,9 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:snowscoop/models/ski-field.dart';
 import 'package:snowscoop/util/build-date-axis.dart';
 
+import 'package:snowscoop/util/theme/theme-wrapper.dart';
+import 'package:snowscoop/util/theme/themes.dart';
+
 class TimeSeriesChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
@@ -22,7 +25,19 @@ class TimeSeriesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new charts.TimeSeriesChart(
+    Size _phoneSize = MediaQuery.of(context).size;
+    _phoneSize =
+        Size(_phoneSize.width, _phoneSize.height - 50); // to adjust for appbar
+
+    var axisColor;
+    // a check to see if we are currently in dark mode
+    CustomTheme.instanceOf(context).themeKey == MyThemeKeys.DARK
+        ? axisColor = charts.MaterialPalette.white
+        : axisColor = charts.MaterialPalette.black;
+
+    return new SizedBox(
+      height: _phoneSize.height * 0.34,
+      child: charts.TimeSeriesChart(
       seriesList,
       animate: animate,
       // Set the default renderer to a bar renderer.
@@ -36,9 +51,23 @@ class TimeSeriesChart extends StatelessWidget {
       // and the domain highlighter that are typical for bar charts.
       behaviors: [new charts.SelectNearest(), new charts.DomainHighlighter()],
       
+      domainAxis: new charts.DateTimeAxisSpec(
+        renderSpec: new charts.SmallTickRendererSpec(
+          labelStyle: new charts.TextStyleSpec(
+              color: axisColor
+            ),
+
+            lineStyle: new charts.LineStyleSpec(color: axisColor),
+        )
+      ),
 
       primaryMeasureAxis: new charts.NumericAxisSpec(
           renderSpec: new charts.GridlineRendererSpec(
+            labelStyle: new charts.TextStyleSpec(
+              color: axisColor
+            ),
+
+            lineStyle: new charts.LineStyleSpec(color: axisColor),
         // Display the measure axis labels below the gridline.
         //
         // 'Before' & 'after' follow the axis value direction.
@@ -54,7 +83,7 @@ class TimeSeriesChart extends StatelessWidget {
         
         
       )),
-    );
+    ));
   }
 
   /// Create series list with multiple series
