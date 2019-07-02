@@ -23,6 +23,7 @@ abstract class FieldState extends State<FieldPage> {
   var selected =SelectedButton.TEMPERATURES;
   String graphTitle = 'Temperatures (\u00B0C)';
   Widget currentGraph;
+  
 
 
   @override
@@ -30,29 +31,4 @@ abstract class FieldState extends State<FieldPage> {
     super.initState();
     currentGraph=SimpleLineChart.withField(widget.field);
   }
-
-   /// switches the selected button and displays new data
-  @protected
-  void switchButton(String title) {
-    switch (title) {
-      case "SNOWRAIN":
-        currentGraph = TimeSeriesChart.withField(widget.field);
-        setState(() { 
-          selected =SelectedButton.SNOWRAIN;
-          graphTitle = 'Snow & Rain';
-        });
-        break;
-      case "TEMPERATURES":
-        currentGraph = SimpleLineChart.withField(widget.field);
-        setState(() { 
-          selected =SelectedButton.TEMPERATURES;
-          graphTitle = 'Temperatures (\u00B0C)';
-        });
-        break;
-        break;
-      default:
-        break;
-    }
-  }
-
 }

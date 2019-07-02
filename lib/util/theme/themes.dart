@@ -8,8 +8,18 @@ class Themes {
   static ThemeData lightTheme = new ThemeData(
       //
       primaryColor: Colors.white,
+      splashColor: Colors.deepPurpleAccent,
       appBarTheme: AppBarTheme(
-        color: Colors.blue
+        color: Colors.deepPurple[400],
+        textTheme: TextTheme(
+          title: TextStyle(
+            color: Colors.black,
+            fontFamily: '.SF UI Display',
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.35,
+          )
+        )
       ),
 
       // color of graph
@@ -19,14 +29,13 @@ class Themes {
       // main accent
       accentColor: Colors.black,
       // selected buttons
-      disabledColor: Colors.blue,
-
+      disabledColor: Colors.deepPurple[200],
 
       fontFamily: 'Signika',
       textTheme: TextTheme(
         // graph title
         title: TextStyle(
-            fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
+            fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
         body1: TextStyle(
             fontSize: 20, color: Colors.blue, fontWeight: FontWeight.w400),
         body2: TextStyle(
@@ -40,7 +49,16 @@ class Themes {
       primaryColor: Colors.black,
       splashColor: Colors.pink,
       appBarTheme: AppBarTheme(
-        color: Colors.black
+        color: Colors.black,
+        textTheme: TextTheme(
+          title: TextStyle(
+            color: Colors.white,
+            fontFamily: '.SF UI Display',
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.35,
+          )
+        )
       ),
 
       // color of graph

@@ -1,8 +1,7 @@
 import 'package:snowscoop/models/ski-field.dart';
 
 class Fields {
-  // List<String> names = [];
-
+  
   List<Region> regions = new List<Region>();
   List<Field> allFields = new List<Field>();
 
@@ -13,6 +12,8 @@ class Fields {
     }
   } 
 
+
+  // grab field objects based on string list from cache
   List<Field> getFieldsFromString(List<String> names){
     List<Field> output = new List<Field>();
     for (String fieldName in names){
@@ -34,7 +35,7 @@ class Fields {
     return null;
   }
 
-  /// adds `field` to `region`
+  /// adds `Field` to `Region`
   addToRegion(Field field) {
     for (Region region in regions){
       if (region.region == field.region){
@@ -46,7 +47,7 @@ class Fields {
     regions.add(newRegion);
   }
 
-  /// returns a `region` object matching the region passed
+  /// returns a `Region` object matching the region passed
   Region getRegion(String region) {
     for (Region r in regions){
       if (r.region == region) return r;

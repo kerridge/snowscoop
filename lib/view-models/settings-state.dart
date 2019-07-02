@@ -18,6 +18,7 @@ abstract class SettingsState extends State<Settings> {
     CustomTheme.instanceOf(buildContext).changeTheme(key);
   }
 
+  // default to dark theme
   var isDarkSetting = true;
 
   /// takes result of settings switch and updates app theme accordingly
@@ -39,10 +40,11 @@ abstract class SettingsState extends State<Settings> {
     super.initState();
 
     getSettings().then((result){
-
+      // after we get our settings from cache
     });
   }
 
+  // async call to get user's settings from cache
   Future getSettings() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     setState(() => isDarkSetting =_prefs.getBool('isDark') ?? true);

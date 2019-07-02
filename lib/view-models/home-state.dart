@@ -23,38 +23,38 @@ abstract class HomeState extends State<Home> {
 
   SharedPreferences _prefs;
 
-  // default region is Otago
-  Region selectedRegion;
+  // current button selected - default to snow
   var selected = SelectedButton.SNOW;
   var graphTitle = 'Snowfall (cm)';
+
   List<Field> _selectedFields = new List<Field>();
-  // var graphDates = buildDates();
 
   Fields skifields =_initFields();
 
   List<Field> get selectedFields => _selectedFields;
 
+  // whether to fill the area on the line graph
   bool fillArea = true;
 
 
   @override
   void initState() {
     super.initState();
-    // just prints the dates needed for now
 
+    // get our cached fields then get data for them
     _getSavedFields().then((result){
       List<Field> initialFields =skifields.getFieldsFromString(result);
       
       for (Field field in initialFields){
-      fieldSelected(field);
-
-    }
+        fieldSelected(field);
+      }
     });
     
     
     print('done');
   }
 
+  // on page teardown
   @override
   void dispose() {
     // close our db client connection
@@ -63,13 +63,13 @@ abstract class HomeState extends State<Home> {
   }
 
 
+  /// asynchronous call to get the list of fields from cache
   Future<List<String>> _getSavedFields() async {
     _prefs = await SharedPreferences.getInstance();
     List<String> fieldsString = _prefs.getStringList('selectedFields') ?? ['Treble Cone'];
     return fieldsString;
   }
 
-  // Field field = new Field('Cardrona', 'Otago');
 
   /// initializes our list of `Field` objects and appends
   /// them to a `Fields` object.
@@ -78,14 +78,15 @@ abstract class HomeState extends State<Home> {
     List<Field> fields = [
       new Field('Cardrona', 'Otago'),
       new Field('Coronet Peak', 'Otago'),
-      new Field('Round Hill', 'South Canterbury'),
+      new Field('Round Hill', 'Canterbury'),
       new Field('Treble Cone', 'Otago'),
       new Field('Remarkables', 'Otago'),
-      new Field('Mount Hutt', 'South Canterbury'),
+      new Field('Mount Hutt', 'Canterbury'),
     ];
 
     return new Fields(fields);
   }
+
 
   /// takes a `List<Field>` object and updates their weather values
   /// with data from our sheets backend
@@ -94,21 +95,27 @@ abstract class HomeState extends State<Home> {
     await _db.connect()
       .then((dynamic res) { // after connection accepted 
         
-        print('yo');
+        // print('connection accepted');
         
     });
+    // get the data from our API
      field = await _db.getFieldWeather(field);
     
+    // tell the UI we aren't in a call anymore
     setState(() => scraping = false);
     
+    // let the field know we have completed a request
     field.hasData = true;
   }
 
-  
+
+  /// takes a field and caches it to device
+  /// then updates the state to represent new graph
   @protected
   void fieldSelected(Field field) async {
     _prefs = await SharedPreferences.getInstance();
     List<String> selectedAsString = new List<String>();
+    // if we don't have data yet, make API call
     if (!field.hasData) updateFieldWeather(field);
     setState(() {
       _selectedFields.contains(field)
@@ -121,8 +128,6 @@ abstract class HomeState extends State<Home> {
     _prefs.setStringList('selectedFields', selectedAsString);
     print(_prefs.getStringList('selectedFields'));
   }
-
-  
 
 
   /// switches the selected button and displays new data

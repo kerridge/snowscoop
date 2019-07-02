@@ -13,7 +13,8 @@ class Field {
   
   List<dynamic> coords;
 
-  /// returns the real weather values or a list of 0's
+  /// returns the real weather values or a list of 0's.
+  /// used when we're in an async call but want the graph to look similar
   Map<String, List<dynamic>> getWeatherMapped() {
     if (rain !=null) {
       return {

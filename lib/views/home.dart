@@ -35,38 +35,37 @@ class HomeView extends HomeState {
     );
   }
 
+  /// the app drawer menu
   Widget _drawer() {
     double _settingsHeight = 70;
 
-    return new 
-      LayoutBuilder(
-      builder: (context, constraints) =>
-      Drawer(
-      child: new Stack(
-        children: <Widget>[
-        Column(
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              for (Widget tile in _fieldTiles()) tile,
-              SizedBox(height: 20,),
-            ]),
-            Positioned(
-              width: _phoneSize.width * 0.73,
-              top: constraints.maxHeight - _settingsHeight,
-              left: constraints.minWidth,
-              child: ListTile(
-                title: Text(
-                  '\t\tSettings',
-                  style: Theme.of(context).textTheme.title,
-                  // textAlign: TextAlign.center,
-                ),
-                trailing: Icon(Icons.settings,
-                    size: 30, color: Theme.of(context).accentColor),
-                onTap: () => Navigator.pushNamed(context, '/settings'),
-              ),
-            )
-      ]),
-    ));
+    return new LayoutBuilder(
+        builder: (context, constraints) => Drawer(
+              child: new Stack(children: <Widget>[
+                Column(children: <Widget>[
+                  // for every tile in field tiles insert them
+                  for (Widget tile in _fieldTiles()) tile,
+                  SizedBox(
+                    height: 20,
+                  ),
+                ]),
+                Positioned(
+                  width: _phoneSize.width * 0.73,
+                  top: constraints.maxHeight - _settingsHeight,
+                  left: constraints.minWidth,
+                  child: ListTile(
+                    title: Text(
+                      '\t\tSettings',
+                      style: Theme.of(context).textTheme.title,
+                      // textAlign: TextAlign.center,
+                    ),
+                    trailing: Icon(Icons.settings,
+                        size: 30, color: Theme.of(context).accentColor),
+                    onTap: () => Navigator.pushNamed(context, '/settings'),
+                  ),
+                )
+              ]),
+            ));
   }
 
   /// Builds the appbar for the page
@@ -83,16 +82,20 @@ class HomeView extends HomeState {
           ),
           title: Text(
             'Snow Scoop',
-            style: Theme.of(context).textTheme.title,
+            style: Theme.of(context).appBarTheme.textTheme.title,
           )),
     );
   }
 
-  // move to its own file
+  // TODO: move to its own widget file
+
+  /// These are the tiles added to the app drawer
   List<Widget> _fieldTiles() {
     List<Widget> tiles = new List<Widget>();
 
-    tiles.add(new SizedBox(height: 40,));
+    tiles.add(new SizedBox(
+      height: 40,
+    ));
     for (Region region in skifields.regions) {
       tiles.add(ListTile(
         title: Text(
@@ -127,6 +130,8 @@ class HomeView extends HomeState {
     return tiles;
   }
 
+  /// the pages background image.
+  /// switches dynamically based on theme context
   Widget _backgroundImage() {
     String bgImage = '';
 
@@ -145,6 +150,7 @@ class HomeView extends HomeState {
     );
   }
 
+  /// the body of our scaffold
   Widget _body() {
     return new LayoutBuilder(
         builder: (context, constraints) => Stack(
@@ -155,20 +161,21 @@ class HomeView extends HomeState {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     FrostedContainer(
-                      width: _bodyWidth, child: _graphWithButtons()),
-                      _legendList(selectedFields),
+                        width: _bodyWidth, child: _graphWithButtons()),
+                    _legendList(selectedFields),
                   ],
                 )
               ],
             ));
   }
 
+  /// the graph object to be displayed, wrapped in a frosted container
+  /// and with graph switching buttons underneath
   Widget _graphWithButtons() {
     return new Padding(
       padding: const EdgeInsets.symmetric(horizontal: 1.0),
       child: new Column(
         children: <Widget>[
-          // SizedBox(height: (_phoneSize.height * 0.02)),
           new Text(
             graphTitle,
             style: Theme.of(context).textTheme.title,
@@ -207,6 +214,8 @@ class HomeView extends HomeState {
     );
   }
 
+  /// a list of `GraphLegendItem` to be built 
+  /// based on the list of ski fields passed
   Widget _legendList(List<Field> fields) {
     List<Widget> legendItems = new List();
 
@@ -240,6 +249,8 @@ class HomeView extends HomeState {
             }));
   }
 
+  /// the container wrapper for our graph.
+  /// also builds the graph with selected fields
   Widget _graphContainer() {
     return new Container(
       height: (_phoneSize.height * 0.37),
@@ -253,7 +264,8 @@ class HomeView extends HomeState {
         child: new Center(
           child: new Padding(
               padding: EdgeInsets.all(10),
-              child: SimpleLineChart.withFieldList(selectedFields, selected, fillArea)),
+              child: SimpleLineChart.withFieldList(
+                  selectedFields, selected, fillArea)),
         ),
       ),
     );
