@@ -259,7 +259,7 @@ class HomeView extends HomeState {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: new ModalProgressHUD(
-        inAsyncCall: scraping,
+        inAsyncCall: inAsyncCall,
         opacity: 0,
         child: new Center(
           child: new Padding(

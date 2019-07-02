@@ -1,10 +1,11 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:snowscoop/models/linear-weather.dart';
+// import 'package:snowscoop/models/linear-weather.dart';
 import 'package:snowscoop/models/ski-field.dart';
 
 import 'package:snowscoop/util/theme/theme-wrapper.dart';
 import 'package:snowscoop/util/theme/themes.dart';
+import 'package:snowscoop/util/build-date-axis.dart';
 
 class SimpleLineChart extends StatefulWidget {
   final List<charts.Series> seriesList;
@@ -61,7 +62,7 @@ class SimpleLineChartState extends State<SimpleLineChart> {
     var children = <Widget>[
       new SizedBox(
         height: _phoneSize.height * 0.34,
-        child: new charts.LineChart(
+        child: new charts.TimeSeriesChart(
         seriesList,
         defaultRenderer: new charts.LineRendererConfig(
             includeArea: widget.fillArea ?? true, stacked: false),
@@ -78,7 +79,7 @@ class SimpleLineChartState extends State<SimpleLineChart> {
         /// This is an OrdinalAxisSpec to match up with BarChart's default
         /// ordinal domain axis (use NumericAxisSpec or DateTimeAxisSpec for
         /// other charts).
-        domainAxis: new charts.NumericAxisSpec(
+        domainAxis: new charts.DateTimeAxisSpec(
             renderSpec: new charts.SmallTickRendererSpec(
 
                 // Tick and Label styling here.
@@ -131,11 +132,14 @@ class SimpleLineChartState extends State<SimpleLineChart> {
     return new Column(children: children);
   }
 
-  static List<charts.Series<LinearWeather, int>> buildSeriesFromFieldList(
+  static List<charts.Series<LinearWeather, DateTime>> buildSeriesFromFieldList(
       List<Field> fields, var selected) {
+
+    var dates = buildDates();
+
     var weatherKey = selected.toString().split('.')[1];
 
-    var output = new List<charts.Series<LinearWeather, int>>();
+    var output = new List<charts.Series<LinearWeather, DateTime>>();
 
     var primaryColors = [
       charts.MaterialPalette.blue.shadeDefault,
@@ -164,13 +168,13 @@ class SimpleLineChartState extends State<SimpleLineChart> {
 
       var val = field.getWeatherMapped()[weatherKey];
       for (int i = 0; i < weatherLength; i++) {
-        data[i] = new LinearWeather(i, val[i]);
+        data[i] = new LinearWeather(dates[i], val[i]);
       }
 
       // make a copy so series is not referencing array
       var currentColor = primaryColors[i];
 
-      output.add(new charts.Series<LinearWeather, int>(
+      output.add(new charts.Series<LinearWeather, DateTime>(
           id: field.title,
           colorFn: (_, __) => currentColor,
           // areaColorFn: (_, __) => currentColor.lighter,
@@ -184,8 +188,10 @@ class SimpleLineChartState extends State<SimpleLineChart> {
     return output;
   }
 
-  static List<charts.Series<LinearWeather, int>> buildSeriesFromField(
+  static List<charts.Series<LinearWeather, DateTime>> buildSeriesFromField(
       Field field) {
+
+    var dates = buildDates();
     int weatherLength = field.rain == null ? 21 : field.rain.length;
 
     List<LinearWeather> maxData = new List<LinearWeather>(weatherLength);
@@ -194,27 +200,27 @@ class SimpleLineChartState extends State<SimpleLineChart> {
 
     var mappedData = field.getWeatherMapped();
     for (int i = 0; i < weatherLength; i++) {
-      maxData[i] = LinearWeather(i, mappedData["MAX"][i]);
-      minData[i] = LinearWeather(i, mappedData["MIN"][i]);
-      chillData[i] = LinearWeather(i, mappedData["CHILL"][i]);
+      maxData[i] = LinearWeather(dates[i], mappedData["MAX"][i]);
+      minData[i] = LinearWeather(dates[i], mappedData["MIN"][i]);
+      chillData[i] = LinearWeather(dates[i], mappedData["CHILL"][i]);
     }
 
     return [
-      new charts.Series<LinearWeather, int>(
+      new charts.Series<LinearWeather, DateTime>(
         id: 'min',
         colorFn: (_, __) => charts.MaterialPalette.cyan.shadeDefault,
         domainFn: (LinearWeather weather, _) => weather.day,
         measureFn: (LinearWeather weather, _) => weather.level,
         data: minData,
       ),
-      new charts.Series<LinearWeather, int>(
+      new charts.Series<LinearWeather, DateTime>(
         id: 'max',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         domainFn: (LinearWeather weather, _) => weather.day,
         measureFn: (LinearWeather weather, _) => weather.level,
         data: maxData,
       ),
-      new charts.Series<LinearWeather, int>(
+      new charts.Series<LinearWeather, DateTime>(
         id: 'chill',
         colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
         domainFn: (LinearWeather weather, _) => weather.day,
@@ -255,16 +261,18 @@ class SimpleLineChartState extends State<SimpleLineChart> {
   }
 
   /// Build a series of x,y data points
-  static List<charts.Series<LinearWeather, int>> buildSeries(
+  static List<charts.Series<LinearWeather, DateTime>> buildSeries(
       List<int> weather) {
+
+    var dates = buildDates();
     final data = new List<LinearWeather>(weather.length);
 
     for (int i = 0; i < weather.length; i++) {
-      data[i] = new LinearWeather(i, weather[i]);
+      data[i] = new LinearWeather(dates[i], weather[i]);
     }
 
     return [
-      new charts.Series<LinearWeather, int>(
+      new charts.Series<LinearWeather, DateTime>(
         id: 'Weather',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         areaColorFn: (_, __) =>
@@ -275,6 +283,13 @@ class SimpleLineChartState extends State<SimpleLineChart> {
       ),
     ];
   }
+}
+
+class LinearWeather {
+  final DateTime day;
+  final int level;
+
+  LinearWeather(this.day, this.level);
 }
 
 // class InheritedDataProvider extends InheritedWidget {

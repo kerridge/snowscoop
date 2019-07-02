@@ -18,7 +18,7 @@ class Home extends StatefulWidget {
 
 abstract class HomeState extends State<Home> {
   @protected
-  bool scraping = true;
+  bool inAsyncCall = true;
   var _db = new SheetsConnection();
 
   SharedPreferences _prefs;
@@ -91,6 +91,9 @@ abstract class HomeState extends State<Home> {
   /// takes a `List<Field>` object and updates their weather values
   /// with data from our sheets backend
   Future updateFieldWeather(Field field) async {
+    // tell the UI we are in a call
+    setState(() => inAsyncCall = true);
+
     // make API connection
     await _db.connect()
       .then((dynamic res) { // after connection accepted 
@@ -102,19 +105,21 @@ abstract class HomeState extends State<Home> {
      field = await _db.getFieldWeather(field);
     
     // tell the UI we aren't in a call anymore
-    setState(() => scraping = false);
+    setState(() => inAsyncCall = false);
     
     // let the field know we have completed a request
     field.hasData = true;
   }
 
 
-  /// takes a field and caches it to device
+  /// takes a field and caches it to device,
   /// then updates the state to represent new graph
   @protected
   void fieldSelected(Field field) async {
+    // get cacge
     _prefs = await SharedPreferences.getInstance();
     List<String> selectedAsString = new List<String>();
+
     // if we don't have data yet, make API call
     if (!field.hasData) updateFieldWeather(field);
     setState(() {
@@ -125,6 +130,8 @@ abstract class HomeState extends State<Home> {
     for (Field field in _selectedFields){
       selectedAsString.add(field.title);
     }
+
+    // save to cache
     _prefs.setStringList('selectedFields', selectedAsString);
     print(_prefs.getStringList('selectedFields'));
   }

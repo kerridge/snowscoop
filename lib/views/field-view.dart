@@ -91,6 +91,7 @@ class FieldView extends FieldState {
                     width: _bodyWidth,
                     child: map(),
                   ),
+                  SizedBox(height: (_phoneSize.height * 0.04)),
                 ],
               ))
             ]));
@@ -131,22 +132,11 @@ class FieldView extends FieldState {
   }
 
 
+  // TODO: move to GraphLegend file
   /// the legend to display when viewing temperatures line chart
   Widget _tempLegend() {
     return new Column(
       children: <Widget>[
-        new GraphLegendItem(
-          label: 'Minimum Temp',
-          width: _bodyWidth,
-          color: Colors.cyan,
-          trailing: Icon(Icons.trending_down,
-              size: _phoneSize.height * 0.04,
-              color: Theme.of(context).accentColor),
-          onTap: () {
-            print('mini me');
-          },
-        ),
-        SizedBox(height: (_phoneSize.height * 0.01)),
         new GraphLegendItem(
           label: 'Maximum Temp',
           width: _bodyWidth,
@@ -156,6 +146,18 @@ class FieldView extends FieldState {
               color: Theme.of(context).accentColor),
           onTap: () {
             print('maximum effort');
+          },
+        ),
+        SizedBox(height: (_phoneSize.height * 0.01)),
+        new GraphLegendItem(
+          label: 'Minimum Temp',
+          width: _bodyWidth,
+          color: Colors.cyan,
+          trailing: Icon(Icons.trending_down,
+              size: _phoneSize.height * 0.04,
+              color: Theme.of(context).accentColor),
+          onTap: () {
+            print('mini me');
           },
         ),
         SizedBox(height: (_phoneSize.height * 0.01)),
@@ -192,7 +194,7 @@ class FieldView extends FieldState {
         ),
         SizedBox(height: (_phoneSize.height * 0.01)),
         new GraphLegendItem(
-          label: 'Rain (mm)',
+          label: 'Rainfall (mm)',
           width: _bodyWidth,
           color: Colors.red,
           trailing: Icon(Icons.beach_access,
@@ -206,6 +208,7 @@ class FieldView extends FieldState {
     );
   }
 
+  // TODO: fix for iOS
   /// the Google Maps map object, wrapped in a container
   Widget map() {
     return new Column(children: <Widget>[
